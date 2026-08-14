@@ -1,0 +1,13 @@
+{
+	"name" : "Advanced Movement Standalone",
+	"description" : "Makes movement a little more interesting. Diesel 3.0 build.",
+	"author" : "Solo Queue Pixy",
+	"version" : "1.96-d3",
+	"image" : "tiddyfell.png",
+	"blt_version" : 2,
+
+	"hooks" : [
+		{ "hook_id" : "lib/managers/menumanager", "script_path" : "menu/AdvMov.lua" },
+		{ "hook_id" : "lib/units/beings/player/states/playerstandard", "script_path" : "lua/playerstandard.lua" }
+	]
+}
