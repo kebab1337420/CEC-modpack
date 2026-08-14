@@ -2,7 +2,5 @@
 payday2/mods/logs/
 payday2/mods/saves/
 payday2/mods/downloads/
-
-# Symboles de debug de SuperBLT (35 Mo, inutiles pour jouer).
-# Dispo sur https://superblt.znix.xyz si un jour on debug la DLL elle-meme.
+*.zip
 payday2/WSOCK32.pdb
