@@ -1,0 +1,35 @@
+<table name="advmovstandalone" color="Color(0, 0.5, 0)">
+	<!-- AssetUpdates retire : l'upstream 1.96 n'est pas compatible Diesel 3.0 et
+	     ecraserait cette version convertie a chaque lancement. -->
+	<Sounds directory="sounds">
+		<sound id="kick_off" path="kick_off.ogg"/>
+		<sound id="kick_light" path="kick_light.ogg"/>
+		<sound id="kick_heavy" path="kick_heavy.ogg"/>
+		<sound id="slide_enter1" path="slide_start1.ogg"/>
+		<sound id="slide_enter2" path="slide_start2.ogg"/>
+		<sound id="slide_loop1" path="slide_loop1.ogg"/>
+		<sound id="slide_loop1slow" path="slide_loop1slow.ogg"/>
+		<sound id="slide_loop1slower" path="slide_loop1slower.ogg"/>
+		<sound id="slide_loop1slowest" path="slide_loop1slowest.ogg"/>
+		<sound id="slide_loop2" path="slide_loop2.ogg"/>
+		<sound id="slide_loop2slow" path="slide_loop2slow.ogg"/>
+		<sound id="slide_loop2slower" path="slide_loop2slower.ogg"/>
+		<sound id="slide_loop2slowest" path="slide_loop2slowest.ogg"/>
+		<sound id="slide_loop3" path="slide_loop3.ogg"/>
+		<sound id="slide_loop3slow" path="slide_loop3slow.ogg"/>
+		<sound id="slide_loop3slower" path="slide_loop3slower.ogg"/>
+		<sound id="slide_loop3slowest" path="slide_loop3slowest.ogg"/>
+		<sound id="slide_loop4" path="slide_loop4.ogg"/>
+		<sound id="slide_loop4slow" path="slide_loop4slow.ogg"/>
+		<sound id="slide_loop4slower" path="slide_loop4slower.ogg"/>
+		<sound id="slide_loop4slowest" path="slide_loop4slowest.ogg"/>
+		<sound id="slide_loop5" path="slide_loop5.ogg"/>
+		<sound id="slide_loop5slow" path="slide_loop5slow.ogg"/>
+		<sound id="slide_loop5slower" path="slide_loop5slower.ogg"/>
+		<sound id="slide_loop5slowest" path="slide_loop5slowest.ogg"/>
+		<sound id="slide_loop6" path="slide_loop6.ogg"/>
+		<sound id="slide_loop6slow" path="slide_loop6slow.ogg"/>
+		<sound id="slide_loop6slower" path="slide_loop6slower.ogg"/>
+		<sound id="slide_loop6slowest" path="slide_loop6slowest.ogg"/>
+	</Sounds>
+</table>
