@@ -79,3 +79,25 @@ function BLT_CarryStacker.DoMasterFunction(useRLog, master_function, ...)
     logger("The master's function result is " .. tostring(result))
     return result
 end
+
+--[[
+    Diesel 3.0 compatibility helper.
+
+    Calls func(...) inside a pcall. If the engine has silently renamed or
+    changed the signature of a hooked function (something we cannot fully
+    verify without the live decompiled 3.0 source), this prevents a hard
+    Lua VM crash and instead disables the mod for the rest of the session,
+    logging the error so it can be reported.
+
+    Returns: success (boolean), result (whatever func returned, or nil)
+]]
+function BLT_CarryStacker.SafeCall(func, ...)
+    local ok, result = pcall(func, ...)
+    if not ok then
+        log("[BLTCS] - ERROR: A hooked function failed, likely due to an " ..
+            "engine change. Disabling Carry Stacker for this session. " ..
+            "Details: " .. tostring(result))
+        BLT_CarryStacker.settings.toggle_enable = false
+    end
+    return ok, result
+end

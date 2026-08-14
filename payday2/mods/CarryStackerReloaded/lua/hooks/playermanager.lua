@@ -54,7 +54,8 @@ function PlayerManager:drop_carry(...)
     else
         logger("The mod has no data on the carry being dropped")
     end
-    master_PlayerManager_drop_carry(self, ...)
+    local ok = BLT_CarryStacker.SafeCall(master_PlayerManager_drop_carry, self, ...)
+    if not ok then return end
     logger("The carry has been dropped")
     -- The Carry has to be removed from the stack after master 
     -- drop_carry. This is so that the mod's state is updated 
@@ -88,8 +89,13 @@ function PlayerManager:set_carry(...)
 
 	logger("Setting the carry with master set_carry and " ..
 		"adding the item to the stack")
-	master_PlayerManager_set_carry(self, ...)
-	BLT_CarryStacker:AddCarry(self:get_my_carry_data())
+	local ok = BLT_CarryStacker.SafeCall(master_PlayerManager_set_carry, self, ...)
+	if not ok then return end
+
+	local ok2, carry_data = BLT_CarryStacker.SafeCall(self.get_my_carry_data, self)
+	if ok2 and carry_data then
+		BLT_CarryStacker:AddCarry(carry_data)
+	end
 	-- This will be used to prevent the player from picking a new bag
 	-- within the next 0.1 sec
 	PlayerStandard:block_use_item()

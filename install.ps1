@@ -46,9 +46,14 @@ function Find-Payday2 {
                   ForEach-Object { $_.Groups[1].Value -replace '\\\\', '\' }
     }
 
+    # PAYDAY2.exe depuis Diesel 3.0 (64 bits), payday2_win32_release.exe avant.
+    $exes = 'PAYDAY2.exe', 'payday2_win32_release.exe'
+
     foreach ($r in ($roots | Select-Object -Unique)) {
         $candidate = Join-Path $r 'steamapps\common\PAYDAY 2'
-        if (Test-Path (Join-Path $candidate 'payday2_win32_release.exe')) { return $candidate }
+        foreach ($exe in $exes) {
+            if (Test-Path (Join-Path $candidate $exe)) { return $candidate }
+        }
     }
     return $null
 }
@@ -69,12 +74,28 @@ Write-Host "OK  WSOCK32.dll + assets\mod_overrides"
 $targetMods = Join-Path $GamePath 'mods'
 
 if ($Link) {
+    $repoMods = Join-Path $overlay 'mods'
     $existing = Get-Item $targetMods -ErrorAction SilentlyContinue
-    if ($existing -and -not ($existing.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-        throw "$targetMods existe deja en dur. Sauvegarde-le puis supprime-le a la main avant -Link."
+
+    if ($existing -and ($existing.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        # Deja une jonction, on la refait au cas ou elle pointe ailleurs.
+        Remove-Item $targetMods -Force
     }
-    if ($existing) { Remove-Item $targetMods -Force }
-    New-Item -ItemType Junction -Path $targetMods -Target (Join-Path $overlay 'mods') | Out-Null
+    elseif ($existing) {
+        # Vrai dossier : on recupere l'etat local, puis on l'archive. Rien n'est supprime.
+        foreach ($state in 'logs', 'saves', 'downloads') {
+            $from = Join-Path $targetMods $state
+            if (Test-Path $from) {
+                Copy-Item $from $repoMods -Recurse -Force
+                Write-Host "OK  $state recupere depuis l'ancienne install"
+            }
+        }
+        $backup = "$targetMods.old-" + (Get-Date -Format 'yyyyMMdd-HHmmss')
+        Move-Item $targetMods $backup
+        Write-Host "OK  ancien dossier mods archive dans $(Split-Path $backup -Leaf)"
+    }
+
+    New-Item -ItemType Junction -Path $targetMods -Target $repoMods | Out-Null
     Write-Host "OK  jonction mods -> repo (mode dev)"
 } else {
     Copy-Item (Join-Path $overlay 'mods') $GamePath -Recurse -Force

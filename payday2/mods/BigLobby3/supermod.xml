@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<mod>
+	<:include src="hooks.xml" />
+	<!-- No <tweak> here on purpose: Diesel 3.0 already declares peer ids up to 15 in
+	     settings/network.network_settings, so the biglobby__* message copies this mod used
+	     to inject are unnecessary. See the README for the two messages still capped at 4. -->
+</mod>

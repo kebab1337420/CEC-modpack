@@ -42,8 +42,10 @@ Crée une jonction `PAYDAY 2\mods` vers `payday2\mods` du repo. Vous éditez dan
 le repo, le jeu voit les modifs au prochain lancement, et `git status` reste
 propre. `assets\mod_overrides` et `WSOCK32.dll` sont copiés normalement.
 
-Marche seulement si `PAYDAY 2\mods` n'existe pas encore. Si vous aviez déjà
-installé en mode copie, sauvegardez ce dossier puis supprimez-le avant.
+Si `PAYDAY 2\mods` existe déjà en dur, le script récupère d'abord `logs`,
+`saves` et `downloads` dans le repo (ignorés par Git, donc `git status` reste
+propre), puis archive l'ancien dossier en `mods.old-<date>`. Rien n'est
+supprimé, vous pouvez toujours revenir en arrière.
 
 ## Ce qu'il y a dedans
 
@@ -62,7 +64,8 @@ installé en mode copie, sauvegardez ce dossier puis supprimez-le avant.
 | The Fixes | 31.5 | andole, Dom | Corrige un paquet de bugs du jeu de base |
 | Useful Bots | 2.6.3 | Hoppip | Refonte légère des bots |
 | Bot Weapons and Equipment | 11.3.1-d3 | Hoppip | Armes et apparence des bots |
-| Carry Stacker Reloaded | 1.10.4 | Lordmau5, enragedpixel, theo-ardouin, m-alorda | Empiler les sacs |
+| BigLobby3 | 3.28.0 | Polarathene, test1, ZNix, Restoration Mod team | Plus de 4 joueurs par lobby (voir [Problèmes connus](#problèmes-connus)) |
+| Carry Stacker Reloaded | 1.10.4-d3 | Lordmau5, enragedpixel, theo-ardouin, m-alorda | Empiler les sacs |
 | Silent Assassin | 2.92 | DrTachyon | Nouvelles règles de pagers en stealth |
 | Meth Helper (Updated) | 2.47-d3 | Offyerrocker | Aide pour la cuisine à Rats et compagnie |
 | Better Assault Indicator | 172 | Dom | Bandeau d'assaut relooké |
@@ -108,6 +111,12 @@ endroits (`Mao Intro` et `Maozedong Intro`), mais Git ne stocke qu'un seul blob
 vu que les deux fichiers sont identiques. Si vous ajoutez d'autres gros
 binaires, gardez ça en tête et restez sous les 100 Mo par fichier, sinon GitHub
 refuse le push.
+
+## Problèmes connus
+
+- **BigLobby3 casse le lobby browser** depuis la dernière update du jeu. Le mod
+  fait toujours son travail sur la limite de joueurs, mais la liste des parties
+  part en vrille. À améliorer, c'est le chantier numéro un du pack.
 
 ## Remonter un bug
 
