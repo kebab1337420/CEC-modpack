@@ -1,0 +1,41 @@
+{
+    "menu_id": "bai_restoration_mod_endless_box_menu",
+    "parent_menu_id" : "bai_restoration_mod_menu",
+    "title" : "bai_endless_box",
+    "items": [
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c1_endless_color_select_choice",
+            "title" : "bai_c1",
+            "description" : "",
+            "default_value" : {
+                "r": 255,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "endless", "c1" ]
+            }
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c2_endless_color_select_choice",
+            "title" : "bai_c2",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "endless", "c2" ]
+            }
+        }
+    ]
+}

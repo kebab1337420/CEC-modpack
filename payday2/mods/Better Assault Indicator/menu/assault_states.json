@@ -1,0 +1,249 @@
+{
+    "menu_id": "bai_assault_states_menu",
+    "parent_menu_id" : "bai_menu",
+    "title" : "bai_assault_states",
+    "dont_create_menu_button": true,
+    "items": [
+        {
+            "type" : "toggle",
+            "id" : "bai_control_box_enabled_choice",
+            "title" : "bai_enabled",
+            "description" : "bai_enabled_not_assault_desc",
+            "callback" : "bai_set_item_value",
+            "default_value" : true,
+            "value" : "enabled",
+            "children" : [ "bai_control_color_select_choice", "bai_control_box_custom_text_input_choice" ],
+            "load_table" : "control",
+            "params": {
+                "settings" : [ "assault_panel", "control" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_control_color_select_choice",
+            "title" : "hud_control_default",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "callback" : "bai_modify_item_color",
+            "parent" : "bai_control_box_enabled_choice",
+            "load_table" : "control",
+            "params": {
+                "settings" : [ "assault_panel", "control" ]
+            }
+        },
+        {
+            "type" : "input",
+            "id" : "bai_control_box_custom_text_input_choice",
+            "title" : "bai_custom_text_input",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "parent" : "bai_control_box_enabled_choice",
+            "load_table" : "control",
+            "value" : "custom_text",
+            "params": {
+                "settings" : [ "assault_panel", "control" ]
+            }
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type" : "toggle",
+            "id" : "bai_anticipation_box_enabled_choice",
+            "title" : "bai_enabled",
+            "description" : "bai_enabled_not_assault_desc",
+            "callback" : "bai_set_item_value",
+            "default_value" : true,
+            "value" : "enabled",
+            "children" : [ "bai_anticipation_color_select_choice", "bai_anticipation_box_custom_text_input_choice" ],
+            "load_table" : "anticipation",
+            "params": {
+                "settings" : [ "assault_panel", "anticipation" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_anticipation_color_select_choice",
+            "title" : "hud_anticipation_default",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 186,
+                "g": 204,
+                "b": 28
+            },
+            "callback" : "bai_modify_item_color",
+            "load_table" : "anticipation",
+            "parent" : "bai_anticipation_box_enabled_choice",
+            "params": {
+                "settings" : [ "assault_panel", "anticipation" ]
+            }
+        },
+        {
+            "type" : "input",
+            "id" : "bai_anticipation_box_custom_text_input_choice",
+            "title" : "bai_custom_text_input",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "parent" : "bai_anticipation_box_enabled_choice",
+            "load_table" : "anticipation",
+            "value" : "custom_text",
+            "params": {
+                "settings" : [ "assault_panel", "anticipation" ]
+            }
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type" : "toggle",
+            "id" : "bai_build_box_enabled_choice",
+            "title" : "bai_enabled",
+            "description" : "bai_enabled_assault_desc",
+            "callback" : "bai_set_item_value",
+            "default_value" : true,
+            "value" : "enabled",
+            "children" : [ "bai_build_color_select_choice", "bai_build_box_custom_text_input_choice" ],
+            "load_table" : "build",
+            "params": {
+                "settings" : [ "assault_panel", "build" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_build_color_select_choice",
+            "title" : "hud_build_default",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 255,
+                "g": 255,
+                "b": 0
+            },
+            "load_table" : "build",
+            "callback" : "bai_modify_item_color",
+            "parent" : "bai_build_box_enabled_choice",
+            "params": {
+                "settings" : [ "assault_panel", "build" ]
+            }
+        },
+        {
+            "type" : "input",
+            "id" : "bai_build_box_custom_text_input_choice",
+            "title" : "bai_custom_text_input",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "parent" : "bai_build_box_enabled_choice",
+            "load_table" : "build",
+            "value" : "custom_text",
+            "params": {
+                "settings" : [ "assault_panel", "build" ]
+            }
+        },
+        {
+            "type": "divider",
+            "size": 32
+        },
+        {
+            "type" : "toggle",
+            "id" : "bai_sustain_box_enabled_choice",
+            "title" : "bai_enabled",
+            "description" : "bai_enabled_assault_desc",
+            "callback" : "bai_set_item_value",
+            "default_value" : true,
+            "value" : "enabled",
+            "children" : [ "bai_sustain_color_select_choice", "bai_sustain_box_custom_text_input_choice" ],
+            "load_table" : "sustain",
+            "params": {
+                "settings" : [ "assault_panel", "sustain" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_sustain_color_select_choice",
+            "title" : "hud_sustain_default",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 237,
+                "g": 127,
+                "b": 127
+            },
+            "load_table" : "sustain",
+            "callback" : "bai_modify_item_color",
+            "parent" : "bai_sustain_box_enabled_choice",
+            "params": {
+                "settings" : [ "assault_panel", "sustain" ]
+            }
+        },
+        {
+            "type" : "input",
+            "id" : "bai_sustain_box_custom_text_input_choice",
+            "title" : "bai_custom_text_input",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "parent" : "bai_sustain_box_enabled_choice",
+            "load_table" : "sustain",
+            "value" : "custom_text",
+            "params": {
+                "settings" : [ "assault_panel", "sustain" ]
+            }
+        },
+        {
+            "type": "divider",
+            "size": 32
+        },
+        {
+            "type" : "toggle",
+            "id" : "bai_fade_box_enabled_choice",
+            "title" : "bai_enabled",
+            "description" : "bai_enabled_assault_desc",
+            "callback" : "bai_set_item_value",
+            "default_value" : true,
+            "value" : "enabled",
+            "children" : [ "bai_fade_color_select_choice", "bai_fade_box_custom_text_input_choice" ],
+            "load_table" : "fade",
+            "params": {
+                "settings" : [ "assault_panel", "fade" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_fade_color_select_choice",
+            "title" : "hud_fade_default",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 0,
+                "g": 255,
+                "b": 255
+            },
+            "load_table" : "fade",
+            "callback" : "bai_modify_item_color",
+            "parent" : "bai_fade_box_enabled_choice",
+            "params": {
+                "settings" : [ "assault_panel", "fade" ]
+            }
+        },
+        {
+            "type" : "input",
+            "id" : "bai_fade_box_custom_text_input_choice",
+            "title" : "bai_custom_text_input",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "parent" : "bai_fade_box_enabled_choice",
+            "load_table" : "fade",
+            "value" : "custom_text",
+            "params": {
+                "settings" : [ "assault_panel", "fade" ]
+            }
+        }
+    ]
+}

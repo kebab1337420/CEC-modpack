@@ -1,0 +1,7 @@
+{
+	"name" : "Perfect View Model",
+    "description" : "A mod that allows you to set your viewmodel stance the way you like it!",
+	"author" : "Luffy",
+	"version" : "1.0-d3",
+    "blt_version" : 2.0
+}

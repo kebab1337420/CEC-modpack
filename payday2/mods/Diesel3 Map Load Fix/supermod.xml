@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<mod name="Diesel3 Map Load Fix">
+	<hooks>
+		<post hook_id="core/lib/utils/dev/editor/coreworlddefinition" script_path="lua/worlddefinition_syncload.lua"/>
+	</hooks>
+</mod>

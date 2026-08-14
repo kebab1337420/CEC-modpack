@@ -1,0 +1,12 @@
+{
+	"the_fixes":"The Fixes",
+	
+	"TF_fire_dot_title":"Statistiche dei DNT per le fiamme",
+	"TF_fire_dot_desc":"Sistema il conteggio delle uccisioni tramite i danni nel tempo da fiamma",
+	"TF_gambler_title":"Condivisione delle munizioni di Temerario",
+	"TF_gambler_desc":"Permette all'abilità di condivisione delle munizioni di Temerario di funzionare con le armi che ottengono poche munizioni da terra.",
+	"TF_cops_reload_title":"I poliziotti ricaricano in movimento",
+	"TF_cops_reload_desc":"Permette ai poliziotti di ricaricare mentre sono in movimento",
+	"TF_instant_quit_title":"Termina l'attività del gioco quando esci",
+	"TF_instant_quit_desc":"Termina l'attività del gioco quando clicchi 'Esci'. Sistema lo stato di uscita infinito e lo stato di 'attività in corso' infinito."
+}

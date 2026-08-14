@@ -1,0 +1,8 @@
+{
+	"name" : "Maouno Downed Sound",
+	"description" : "Plays the MAOUNO FaceTime clip whenever you get downed.",
+	"author" : "Alaric",
+	"color" : "0.9 0.2 0.2",
+	"version" : "1.0.0",
+	"priority" : 10
+}

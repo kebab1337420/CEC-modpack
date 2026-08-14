@@ -1,0 +1,7 @@
+{
+	"name" : "Diesel3 Map Load Fix",
+	"description" : "Forces custom map units to finish loading before WorldDefinition spawns them, instead of racing an async dynamic resource load.",
+	"author" : "local fix",
+	"version" : "1.0",
+	"priority" : 10
+}

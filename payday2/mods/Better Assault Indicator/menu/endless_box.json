@@ -1,0 +1,57 @@
+{
+    "menu_id": "bai_endless_box_menu",
+    "parent_menu_id" : "bai_menu",
+    "title" : "bai_endless_box",
+    "dont_create_menu_button": true,
+    "global_params": {
+        "settings": [ "assault_panel", "endless" ]
+    },
+    "items": [
+        {
+            "type" : "color",
+            "id" : "bai_endless_color_select_choice",
+            "title" : "bai_endless_box",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 255,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color"
+        },
+        {
+            "type" : "color",
+            "id" : "bai_endless_color_mutated_select_choice",
+            "title" : "bai_endless_box_mutated",
+            "description" : "",
+            "default_value": {
+                "r": 106,
+                "g": 67,
+                "b": 255
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "assault_panel", "endless_mutated" ]
+            }
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type": "toggle",
+            "id" : "bai_hide_hostage_panel_during_endless_choice",
+            "title" : "bai_hide_hostage_panel",
+            "description" : "bai_hide_hostage_panel_endless_desc",
+            "callback" : "bai_set_item_value",
+            "callback_arguments" : "endless",
+            "value" : "hide_hostage_panel",
+            "default_value" : false
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        }
+    ]
+}

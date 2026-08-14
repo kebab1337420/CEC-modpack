@@ -1,0 +1,46 @@
+{
+    "menu_id": "bai_survived_box_menu",
+    "parent_menu_id" : "bai_menu",
+    "title" : "bai_survived_box",
+    "dont_create_menu_button": true,
+    "global_params" : {
+        "settings": [ "assault_panel", "survived" ]
+    },
+    "items": [
+        {
+            "type" : "color",
+            "id" : "bai_survived_color_select_choice",
+            "title" : "bai_survived_box",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 32,
+                "g": 230,
+                "b": 32
+            },
+            "callback" : "bai_modify_item_color"
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type" : "input",
+            "id" : "bai_survived_box_custom_text_input_choice",
+            "title" : "bai_custom_text",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "custom_text",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_survived_box_custom_text_short_input_choice",
+            "title" : "bai_custom_text_short",
+            "description" : "bai_custom_text_input_short_desc",
+            "callback" : "bai_set_item_value",
+            "value": "short_custom_text",
+            "default_value" : ""
+        }
+    ]
+}

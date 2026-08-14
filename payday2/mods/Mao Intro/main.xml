@@ -1,0 +1,16 @@
+<mod name="Mao Intro" author="Alaric" color="Color(0.85,0.12,0.12)">
+	<!--
+		Remplace l'animation de lancement de PAYDAY 2.
+
+		BootupState:setup() (lib/states/bootupstate.lua) termine sa playlist par
+		l'entree { video = "movies/game_intro" }. On reenregistre cet asset vers
+		un fichier Bink 2 local via DB:create_entry (BeardLib -> BLT.AssetManager).
+
+		mod_overrides n'accepte pas l'extension .movie : le passage par BeardLib
+		est obligatoire. AddFiles utilise force=true par defaut, donc l'entree
+		vanilla est bien ecrasee.
+	-->
+	<AddFiles directory="assets">
+		<movie path="movies/game_intro"/>
+	</AddFiles>
+</mod>

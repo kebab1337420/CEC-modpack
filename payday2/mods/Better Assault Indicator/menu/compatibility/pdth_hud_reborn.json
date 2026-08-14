@@ -1,0 +1,37 @@
+{
+    "menu_id": "bai_pdth_hud_reborn_menu",
+    "parent_menu_id" : "bai_menu",
+    "title" : "bai_compatibility_7",
+    "global_params": {
+        "settings": [ "hud", "pdth_hud_reborn" ]
+    },
+    "dont_create_menu_button": true,
+    "items": [
+        {
+            "type" : "toggle",
+            "id" : "bai_pdth_hud_reborn_custom_text_color_choice",
+            "title" : "bai_pdth_hud_reborn_custom_text_color",
+            "description" : "bai_pdth_hud_reborn_custom_text_color_desc",
+            "callback" : "bai_set_item_value",
+            "value" : "custom_text_color",
+            "child" : "bai_pdth_hud_reborn_color_select_choice",
+            "default_value" : false
+        },
+        {
+            "type" : "color",
+            "id" : "bai_pdth_hud_reborn_color_select_choice",
+            "title" : "bai_pdth_hud_reborn_custom_text_color",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "parent" : "bai_pdth_hud_reborn_custom_text_color_choice",
+            "params" : {
+                "settings": [ "hud", "pdth_hud_reborn", "color" ]
+            }
+        }
+    ]
+}

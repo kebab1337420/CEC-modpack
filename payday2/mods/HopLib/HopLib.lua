@@ -1,0 +1,189 @@
+if not HopLib then
+
+	_G.HopLib = {}
+
+	dofile(ModPath .. "req/ColorUtils.lua")
+	dofile(ModPath .. "req/MenuBuilder.lua")
+	dofile(ModPath .. "req/NameProvider.lua")
+	dofile(ModPath .. "req/TableUtils.lua")
+	dofile(ModPath .. "req/UnitInfoManager.lua")
+
+	Hooks:Register("HopLibOnUnitDamaged")
+	Hooks:Register("HopLibOnUnitDied")
+	Hooks:Register("HopLibOnMinionAdded")
+	Hooks:Register("HopLibOnMinionRemoved")
+	Hooks:Register("HopLibOnCharacterMapCreated")
+
+	HopLib.mod_path = ModPath
+	HopLib.save_path = SavePath
+
+	HopLib.language_keys = {
+		[Idstring("dutch"):key()] = "dutch",
+		[Idstring("english"):key()] = "english",
+		[Idstring("finnish"):key()] = "finnish",
+		[Idstring("french"):key()] = "french",
+		[Idstring("german"):key()] = "german",
+		[Idstring("italian"):key()] = "italian",
+		[Idstring("japanese"):key()] = "japanese",
+		[Idstring("korean"):key()] = "korean",
+		[Idstring("latam"):key()] = "latam",
+		[Idstring("polish"):key()] = "polish",
+		[Idstring("portuguese"):key()] = "portuguese",
+		[Idstring("russian"):key()] = "russian",
+		[Idstring("schinese"):key()] = "schinese",
+		[Idstring("spanish"):key()] = "spanish",
+		[Idstring("swedish"):key()] = "swedish",
+		[Idstring("turkish"):key()] = "turkish"
+	}
+
+	---Returns the current NameProvider instance
+	---@return NameProvider
+	function HopLib:name_provider()
+		if not self._name_provider then
+			self._name_provider = NameProvider:new()
+		end
+		return self._name_provider
+	end
+
+	---Returns the current UnitInfoManager instance
+	---@return UnitInfoManager
+	function HopLib:unit_info_manager()
+		if not self._unit_info_manager then
+			self._unit_info_manager = UnitInfoManager:new()
+		end
+		return self._unit_info_manager
+	end
+
+	---Use BLT's `Utils:IsInstanceOf(object, c)` instead
+	---@deprecated
+	function HopLib:is_object_of_class(object, c)
+		return Utils:IsInstanceOf(object, c)
+	end
+
+	---Returns the language of the game
+	---@return string
+	function HopLib:get_game_language()
+		return self.language_keys[SystemInfo:language():key()] or "english"
+	end
+
+	---Returns the modded language
+	---@return string?
+	function HopLib:get_modded_language()
+		local mod_language = PD2KR and "korean" or PD2PTBR and "portuguese"
+		if mod_language then
+			return mod_language
+		end
+		local mod_language_table = {
+			["PAYDAY 2 THAI LANGUAGE Mod"] = "thai"
+		}
+		for _, mod in pairs(BLT and BLT.Mods:Mods() or {}) do
+			if mod:IsEnabled() and mod_language_table[mod:GetName()] then
+				return mod_language_table[mod:GetName()]
+			end
+		end
+	end
+
+	---Loads localization file and returns loaded language
+	---@param path string @path to look for localization files in
+	---@param localization_manager? table @instance of the localization manager
+	---@return string?
+	function HopLib:load_localization(path, localization_manager)
+		localization_manager = localization_manager or managers.localization
+		if not localization_manager then
+			log("[HopLib] ERROR: No localization manager available to load localization for " .. path .. "!")
+			return
+		end
+
+		local system_language = self:get_game_language()
+		local blt_language = BLT.Localization:get_language().language
+		local mod_language = self:get_modded_language()
+		local exts = { ".txt", ".json" }
+		local alts = { latam = "spanish" }
+		local language, language_file
+
+		local function loc_file(lang)
+			if not lang then
+				return language, language_file
+			end
+			for _, ext in pairs(exts) do
+				if io.file_is_readable(path .. lang .. ext) then
+					return lang, path .. lang .. ext
+				elseif alts[lang] and io.file_is_readable(path .. alts[lang] .. ext) then
+					return alts[lang], path .. alts[lang] .. ext
+				end
+			end
+			return language, language_file
+		end
+
+		language, language_file = loc_file("english")
+		if language then
+			localization_manager:load_localization_file(language_file)
+		end
+
+		language, language_file = loc_file(system_language)
+		language, language_file = loc_file(blt_language)
+		language, language_file = loc_file(mod_language)
+		if language and language ~= "english" then
+			localization_manager:load_localization_file(language_file)
+		end
+
+		return language or "english"
+	end
+
+	---@class assetdef
+	---@field ext Idstring
+	---@field path Idstring
+	---@field file string
+	---@field override boolean?
+
+	---Loads assets from files with an asset definition in the form of
+	---```lua
+	---{
+	---	ext = Idstring("texture"),
+	---	path = Idstring("guis/textures/my_texture"),
+	---	file = "mods/my_mod/assets/my_texture.texture"
+	---}
+	---```
+	---Existing assets will only be replaced if `override = true` is specified in the asset definition
+	---@param assets assetdef[] @list of assets to load
+	function HopLib:load_assets(assets)
+		for _, v in pairs(assets) do
+			if v.override or not DB:has(v.ext, v.path) then
+				BLT.AssetManager:CreateEntry(v.path, v.ext, v.file)
+			end
+		end
+	end
+
+	---Executes a lua file matching the current `RequiredScript` file name
+	---@param path string @path to look for matching lua files in
+	function HopLib:run_required(path)
+		if not RequiredScript then
+			return
+		end
+
+		self._required = self._required or {}
+
+		local fname = path .. RequiredScript:gsub(".+/(.+)", "%1.lua")
+		if self._required[fname] then
+			return
+		end
+
+		if io.file_is_readable(fname) then
+			dofile(fname)
+		end
+
+		self._required[fname] = true
+	end
+
+	Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInitHopLib", function(loc)
+		HopLib:load_localization(HopLib.mod_path .. "loc/", loc)
+
+		local custom_loc_path = SavePath .. "hoplib_custom_loc.txt"
+		if io.file_is_readable(custom_loc_path) then
+			pcall(loc.load_localization_file, loc, custom_loc_path)
+		end
+	end)
+
+end
+
+HopLib:run_required(HopLib.mod_path .. "lua/")

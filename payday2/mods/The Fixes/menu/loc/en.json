@@ -1,0 +1,12 @@
+{
+	"the_fixes":"The Fixes",
+	
+	"TF_fire_dot_title":"Fire DOT stats fix",
+	"TF_fire_dot_desc":"Fixes the counting of kills by fire damage over time",
+	"TF_gambler_title":"Fix Gambler's ammo sharing",
+	"TF_gambler_desc":"This makes Gambler's ammo sharing ability work for weapons with low pickup.",
+	"TF_cops_reload_title":"Cops reload when moving",
+	"TF_cops_reload_desc":"Allows cops to reload when they are moving",
+	"TF_instant_quit_title":"Kill the game process on quit",
+	"TF_instant_quit_desc":"Kills the game process when you click 'Quit'. Fixes infinite exitting and infinite 'running' status."
+}

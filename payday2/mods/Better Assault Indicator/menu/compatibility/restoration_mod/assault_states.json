@@ -1,0 +1,198 @@
+{
+    "menu_id": "bai_restoration_mod_assault_states_menu",
+    "parent_menu_id" : "bai_restoration_mod_menu",
+    "title" : "bai_assault_states",
+    "items": [
+        {
+            "type" : "divider",
+            "title" : "hud_control_default",
+            "no_text" : false
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c1_control_color_select_choice",
+            "title" : "bai_c1",
+            "description" : "",
+            "default_value" : {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "control", "c1" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c2_control_color_select_choice",
+            "title" : "bai_c2",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "control", "c2" ]
+            }
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type" : "divider",
+            "title" : "hud_anticipation_default",
+            "no_text" : false
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c1_anticipation_color_select_choice",
+            "title" : "bai_c1",
+            "description" : "",
+            "default_value" : {
+                "r": 186,
+                "g": 204,
+                "b": 28
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "anticipation", "c1" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c2_anticipation_color_select_choice",
+            "title" : "bai_c2",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "anticipation", "c2" ]
+            }
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type" : "divider",
+            "title" : "hud_build_default",
+            "no_text" : false
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c1_build_color_select_choice",
+            "title" : "bai_c1",
+            "description" : "",
+            "default_value" : {
+                "r": 255,
+                "g": 255,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "build", "c1" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c2_build_color_select_choice",
+            "title" : "bai_c2",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "build", "c2" ]
+            }
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type" : "divider",
+            "title" : "hud_sustain_default",
+            "no_text" : false
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c1_sustain_color_select_choice",
+            "title" : "bai_c1",
+            "description" : "",
+            "default_value" : {
+                "r": 237,
+                "g": 127,
+                "b": 127
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "sustain", "c1" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c2_sustain_color_select_choice",
+            "title" : "bai_c2",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "sustain", "c2" ]
+            }
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type" : "divider",
+            "title" : "hud_fade_default",
+            "no_text" : false
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c1_fade_color_select_choice",
+            "title" : "bai_c1",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 255,
+                "b": 255
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "fade", "c1" ]
+            }
+        },
+        {
+            "type" : "color",
+            "id" : "bai_restoration_mod_c2_fade_color_select_choice",
+            "title" : "bai_c2",
+            "description" : "",
+            "default_value" : {
+                "r": 0,
+                "g": 0,
+                "b": 0
+            },
+            "callback" : "bai_modify_item_color",
+            "params": {
+                "settings": [ "hud", "restoration_mod", "assault_panel", "fade", "c2" ]
+            }
+        }
+    ]
+}

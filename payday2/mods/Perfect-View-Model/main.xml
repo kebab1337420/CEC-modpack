@@ -1,0 +1,18 @@
+<mod name="PerfectViewModel" global_key="PVM" core_class="PVM.lua" min_lib_ver="4.5">
+   <AssetUpdates id="17618" version="2.1" provider="modworkshop"/>
+	<Hooks>
+		<hook source_file="lib/managers/weaponfactorymanager" file="WeaponFactoryManager.lua"/>
+	</Hooks>
+	<Options build_menu="false">
+		<options>
+         	<option type="string" default_value="f7" name="ToggleKey"/>
+         	<option type="string" default_value="f5" name="RefreshKey"/>
+         	<option type="number" default_value="1" name="TranslationStep"/>
+         	<option type="number" default_value="1" name="RotationStep"/>
+			<option type="boolean" default_value="false" name="ApplyOnAll"/>
+			<option name="Saved" type="table">
+				<default_value/>
+			</option>
+		</options>
+	</Options>
+</mod>

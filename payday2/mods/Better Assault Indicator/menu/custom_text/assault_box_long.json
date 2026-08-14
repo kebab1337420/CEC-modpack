@@ -1,0 +1,160 @@
+{
+    "menu_id": "bai_assault_box_custom_text_long_menu",
+    "parent_menu_id" : "bai_assault_box_menu",
+    "title" : "bai_custom_text",
+    "global_params" : {
+        "settings": [ "assault_panel", "assault", "custom_text" ]
+    },
+    "dont_create_menu_button": true,
+    "items": [
+        {
+            "type" : "divider",
+            "title" : "bai_custom_text_difficulty",
+            "no_text" : false
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_normal_input_choice",
+            "title" : "bai_normal",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "normal",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_hard_input_choice",
+            "title" : "bai_hard",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "hard",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_very_hard_input_choice",
+            "title" : "bai_very_hard",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "overkill",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_overkill_input_choice",
+            "title" : "bai_overkill",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "overkill_145",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_mayhem_input_choice",
+            "title" : "bai_mayhem",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "easy_wish",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_death_wish_input_choice",
+            "title" : "bai_death_wish",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "overkill_290",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_death_sentence_input_choice",
+            "title" : "bai_death_sentence",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "sm_wish",
+            "default_value" : ""
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type" : "divider",
+            "title" : "bai_custom_text_faction",
+            "no_text" : false
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_swat_input_choice",
+            "title" : "bai_swat",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "swat",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_fbi_input_choice",
+            "title" : "bai_fbi",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "fbi",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_gensec_input_choice",
+            "title" : "bai_gensec",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "gensec",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_zeal_input_choice",
+            "title" : "bai_zeal",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "zeal",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_russia_input_choice",
+            "title" : "bai_russia",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "russia",
+            "default_value" : ""
+        },
+        {
+            "type": "input",
+            "id": "bai_assault_box_custom_text_long_zombie_input_choice",
+            "title": "bai_zombie",
+            "description": "bai_custom_text_input_desc",
+            "callback": "bai_set_item_value",
+            "value": "zombie",
+            "default_value": ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_murkywater_input_choice",
+            "title" : "bai_murkywater",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "murkywater",
+            "default_value" : ""
+        },
+        {
+            "type" : "input",
+            "id" : "bai_assault_box_custom_text_long_federales_input_choice",
+            "title" : "bai_federales",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value": "federales",
+            "default_value" : ""
+        }
+    ]
+}

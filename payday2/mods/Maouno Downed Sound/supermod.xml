@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<mod name="Maouno Downed Sound">
+	<hooks>
+		<post hook_id="lib/units/beings/player/playerdamage" script_path="hooks/downed.lua"/>
+		<post hook_id="lib/states/ingamewaitingforrespawn" script_path="hooks/custody.lua"/>
+		<post hook_id="lib/setups/setup" script_path="hooks/teardown.lua"/>
+		<post hook_id="lib/setups/gamesetup" script_path="hooks/teardown.lua"/>
+	</hooks>
+</mod>

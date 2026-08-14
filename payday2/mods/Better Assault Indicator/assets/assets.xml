@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<assets base_path="assets/" load="startup">
+    <group name="guis/textures/pd2_mod_bai/" path="assets/guis/textures/pd2_mod_bai/">
+        <file :name="spawns_left.texture" :path="spawns_left.png"/>
+    </group>
+
+    <!-- Overrides game's textures -->
+    <group name="guis/textures/pd2/" path="assets/guis/textures/pd2_mod_bai/">
+        <file :name="hud_icon_assaultbox.texture" :path="hud_icon_assaultbox.png"/>
+        <file :name="hud_icon_stealthbox.texture" :path="hud_icon_stealthbox.png"/>
+        <file :name="hud_icon_noreturnbox.texture" :path="hud_icon_noreturnbox.png"/>
+    </group>
+</assets>

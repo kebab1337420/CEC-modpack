@@ -1,0 +1,13 @@
+{
+	"name" : "Bot Weapons and Equipment",
+	"description" : "Improved Crew Management, customize the visual appearance of the Team AI to make them more human-like",
+	"author" : "Hoppip",
+	"color" : "0.043 0.808 0.6",
+	"image" : "mod.png",
+	"version" : "11.3.1-d3",
+	"priority" : 10,
+	"_disabled_updates_see_supermod_xml" : [{
+		"identifier" : "pd2-bot-weapons",
+		"host": { "meta": "https://updates.hoppip.at/pd2-bot-weapons" }
+	}]
+}

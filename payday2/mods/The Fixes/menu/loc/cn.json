@@ -1,0 +1,11 @@
+{
+	"the_fixes":"若干游戏BUG修复",
+	
+	"TF_fire_dot_title":"火焰伤害数据计算修复",
+	"TF_fire_dot_desc":"修复燃烧杀敌不算玩家击杀数的问题",
+	"TF_gambler_title":"修复赌徒\"弹药分享\"计算错误的问题",
+	"TF_gambler_desc":"这个修复让赌徒的\"弹药分享\"能对低捡弹武器正常地触发和运行。",
+	"TF_cops_reload_title":"警察会在移动时换弹",
+	"TF_cops_reload_desc":"允许警察在移动时换弹。\n原版需要停在某处才会换弹。",
+	"TF_instant_quit_title":"退出游戏时杀掉游戏进程"
+}

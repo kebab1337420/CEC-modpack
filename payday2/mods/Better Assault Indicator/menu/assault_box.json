@@ -1,0 +1,196 @@
+{
+    "menu_id": "bai_assault_box_menu",
+    "parent_menu_id" : "bai_menu",
+    "title" : "bai_assault_box",
+    "dont_create_menu_button": true,
+    "items": [
+        {
+            "type" : "divider",
+            "title" : "bai_assault_box",
+            "no_text" : false
+        },
+        {
+            "type": "color",
+            "id": "bai_assault_color_select_choice",
+            "title": "bai_assault_box",
+            "description": "",
+            "read_color_directly": true,
+            "default_value": {
+                "r": 255,
+                "g": 255,
+                "b": 0
+            },
+            "callback": "bai_modify_item_color",
+            "params": {
+                "settings": [ "assault_panel", "assault" ]
+            },
+            "load_table": "assault"
+        },
+        {
+            "type": "color",
+            "id": "bai_assault_mutated_color_select_choice",
+            "title": "bai_assault_box_mutated",
+            "description": "",
+            "read_color_directly": true,
+            "default_value": {
+                "r": 211,
+                "g": 133,
+                "b": 255
+            },
+            "callback": "bai_modify_item_color",
+            "params": {
+                "settings": [ "assault_panel", "assault_mutated" ]
+            },
+            "load_table": "assault_mutated"
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type": "toggle",
+            "id": "bai_hide_hostage_panel_during_assault_choice",
+            "title": "bai_hide_hostage_panel",
+            "description": "bai_hide_hostage_panel_assault_desc",
+            "callback": "bai_set_item_value",
+            "value": "hide_hostage_panel",
+            "default_value": false,
+            "params": {
+                "settings": [ "assault_panel", "assault" ]
+            },
+            "load_table": "assault"
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type": "button",
+            "id": "bai_assault_custom_text_choice",
+            "title": "bai_custom_text",
+            "next_menu": "bai_assault_box_custom_text_long_menu"
+        },
+        {
+            "type": "button",
+            "id": "bai_assault_short_custom_text_choice",
+            "title": "bai_custom_text_short",
+            "next_menu": "bai_assault_box_custom_text_short_menu"
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type" : "divider",
+            "title" : "bai_captain_box",
+            "no_text" : false
+        },
+        {
+            "type": "color",
+            "id": "bai_captain_color_select_choice",
+            "title": "bai_captain_box",
+            "description": "",
+            "read_color_directly": true,
+            "default_value": {
+                "r": 255,
+                "g": 128,
+                "b": 0
+            },
+            "callback": "bai_modify_item_color",
+            "params": {
+                "settings": [ "assault_panel", "captain" ]
+            },
+            "load_table": "captain"
+        },
+        {
+            "type": "color",
+            "id": "bai_captain_color_mutated_select_choice",
+            "title": "bai_captain_box_mutated",
+            "description": "",
+            "read_color_directly": true,
+            "default_value": {
+                "r": 255,
+                "g": 133,
+                "b": 225
+            },
+            "callback": "bai_modify_item_color",
+            "params": {
+                "settings": [ "assault_panel", "captain_mutated" ]
+            },
+            "load_table": "captain_mutated"
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type" : "toggle",
+            "id" : "bai_hide_hostage_panel_during_captain_choice",
+            "title" : "bai_hide_hostage_panel",
+            "description" : "bai_hide_hostage_panel_captain_desc",
+            "callback" : "bai_set_item_value",
+            "value" : "hide_hostage_panel",
+            "default_value" : true,
+            "load_table": "captain",
+            "params": {
+                "settings": [ "assault_panel", "captain" ]
+            }
+        },
+        {
+            "type": "divider",
+            "size": 20
+        },
+        {
+            "type" : "input",
+            "id" : "bai_captain_box_custom_text_input_choice",
+            "title" : "bai_custom_text",
+            "description" : "bai_custom_text_input_desc",
+            "callback" : "bai_set_item_value",
+            "value" : "custom_text",
+            "default_value" : "",
+            "load_table": "captain",
+            "params": {
+                "settings": [ "assault_panel", "captain" ]
+            }
+        },
+        {
+            "type" : "input",
+            "id" : "bai_captain_box_custom_text_short_input_choice",
+            "title" : "bai_custom_text_short",
+            "description" : "bai_custom_text_input_short_desc",
+            "callback" : "bai_set_item_value",
+            "value" : "short_custom_text",
+            "default_value" : "",
+            "load_table": "captain",
+            "params": {
+                "settings": [ "assault_panel", "captain" ]
+            }
+        },
+        {
+            "type" : "divider",
+            "size" : 20
+        },
+        {
+            "type" : "divider",
+            "title" : "bai_holdout_box",
+            "no_text" : false
+        },
+        {
+            "type" : "color",
+            "id" : "bai_holdout_color_select_choice",
+            "title" : "bai_holdout_box",
+            "description" : "",
+            "read_color_directly": true,
+            "default_value" : {
+                "r": 255,
+                "g": 85,
+                "b": 30
+            },
+            "callback" : "bai_modify_item_color",
+            "load_table": "holdout",
+            "params": {
+                "settings": [ "assault_panel", "holdout" ]
+            }
+        }
+    ]
+}

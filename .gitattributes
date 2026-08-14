@@ -1,0 +1,20 @@
+# Les fichiers de ce repo sont copies tels quels dans PAYDAY 2.
+# Aucune conversion de fin de ligne, sinon les assets et les .lua hookes cassent.
+* -text
+
+# Assets Diesel et binaires : pas de diff, pas de merge.
+*.dll        binary
+*.pdb        binary
+*.movie      binary
+*.texture    binary
+*.bnk        binary
+*.stream     binary
+*.unit       binary
+*.model      binary
+*.object     binary
+*.cooked_physics binary
+*.png        binary
+*.jpg        binary
+*.dds        binary
+*.ogg        binary
+*.wav        binary
