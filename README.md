@@ -1,7 +1,7 @@
 # CEC-modpack
 modpack pour les gweros koufardos 🌚 .
 
-C'est pas entièrement fini hein :hammer: on est juste à la V 0.:1: pour l'instant :clock1: donc y'aura sûrement des crash 🗼✈️ ou des glitchs :robot:.
+C'est pas entièrement fini hein :hammer: on est juste à la V 0.1 pour l'instant :clock1: donc y'aura sûrement des crash 🗼✈️ ou des glitchs :robot:.
 
 SuperBLT 🥪 déjà dans le modpack , y'a juste à copier les 4 fichiers 📂 dans le fichier PAYDAY 2 🤡
 
