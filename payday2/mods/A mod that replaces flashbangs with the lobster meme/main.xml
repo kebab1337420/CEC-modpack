@@ -1,0 +1,18 @@
+<mod name="A mod that replaces flashbangs with the lobster meme" global_key="FlashBMemes">
+	<!-- AssetUpdates retire : la mise a jour automatique de l'auteur ecraserait
+	     la texture personnalisee du modpack. -->
+	<Localization default="loc_en.json"/>
+	<Options>
+		<options title_id="FlashBMemes_opt_menu_name" desc_id="FlashBMemes_opt_menu_none" build_items="true">
+			<option type="number" min="0" max="1" step="0.1" show_value="true" default_value="1" 
+				title_id="FlashBMemes_opt_volume_start" desc_id="FlashBMemes_opt_volume_start_desc" name="__volume_start" 
+			/>
+			<option type="boolean" default_value="true" 
+				title_id="FlashBMemes_opt_volume_fadeout" desc_id="FlashBMemes_opt_volume_fadeout_desc" name="__volume_fadeout" 
+			/>
+			<option type="boolean" default_value="true" 
+				title_id="FlashBMemes_opt_picture_fadeout" desc_id="FlashBMemes_opt_picture_fadeout_desc" name="__picture_fadeout" 
+			/>
+		</options>
+	</Options>
+</mod>

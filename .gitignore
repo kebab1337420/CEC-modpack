@@ -3,3 +3,6 @@ payday2/mods/logs/
 payday2/mods/saves/
 payday2/mods/downloads/
 *.zip
+
+# Dossier de transit : archives et images sources en attente d'integration.
+truc à ajouter/
