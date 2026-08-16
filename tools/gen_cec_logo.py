@@ -39,12 +39,6 @@ def fit(canvas_w, canvas_h):
     return canvas
 
 
-def opacity_map(rgba):
-    """Carte d'opacite : blanc ou le logo est opaque, noir ailleurs."""
-    a = rgba.getchannel("A")
-    return Image.merge("RGBA", (a, a, a, Image.new("L", rgba.size, 255)))
-
-
 def _dxt5(img):
     """Blocs DXT5 nus : Pillow encode, on jette l'en-tete DDS de 128 octets."""
     buf = io.BytesIO()
@@ -87,15 +81,13 @@ def save_texture(img, path, mipmaps=False):
 # Textures GUI : affichees a l'echelle 1:1, pas besoin de mips.
 gui = {
     "guis/textures/menu_title_screen": fit(1024, 1024),
+    "guis/textures/menu_title_screen_sale": fit(1024, 1024),
     "guis/textures/game_small_logo": fit(256, 56),
 }
 
 # Unites 3D du menu : mips pour eviter le scintillement a distance.
-backdrop = fit(1024, 1024)
 units = {
-    "units/menu/menu_backdrop/paydaylogo_df": backdrop,
-    "units/menu/menu_backdrop/paydaylogo_op": opacity_map(backdrop),
-    "units/menu/menu_scene/menu_cylinder_projection_logo_df": fit(1024, 1024),
+    "units/menu/menu_scene/menu_cylinder_logo": fit(1024, 1024),
 }
 
 for rel, img in gui.items():
