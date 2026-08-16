@@ -29,16 +29,15 @@ src = Image.open(SRC).convert("RGBA")
 src = src.crop(src.getbbox())  # logo serre, sans marge transparente
 
 
-def fit(canvas_w, canvas_h, squeeze=1.0):
-    """Logo centre sur un canvas transparent, ratio preserve.
+def fit(canvas_w, canvas_h, fill=1.0):
+    """Logo centre sur un canvas transparent, ratio du logo preserve.
 
-    squeeze comprime le logo horizontalement. A utiliser quand la surface qui
-    affiche la texture n'est pas au meme ratio que le canvas : le jeu etire
-    l'image sur toute la surface, un logo pre-comprime du meme facteur ressort
-    rond. squeeze=2 pour une surface deux fois plus large que haute.
+    fill est la part du canvas occupee par le logo : 1.0 le fait toucher les
+    bords, 0.5 le laisse a la moitie. Le reste du canvas est transparent, donc
+    reduire fill revient a afficher un logo plus petit sans jamais le deformer.
     """
-    scale = min(canvas_w / (src.width / squeeze), canvas_h / src.height)
-    w = max(1, round(src.width * scale / squeeze))
+    scale = min(canvas_w / src.width, canvas_h / src.height) * fill
+    w = max(1, round(src.width * scale))
     h = max(1, round(src.height * scale))
     logo = src.resize((w, h), Image.LANCZOS)
     canvas = Image.new("RGBA", (canvas_w, canvas_h), (0, 0, 0, 0))
@@ -85,10 +84,9 @@ def save_texture(img, path, mipmaps=False):
     print(f"{w}x{h} mips={len(levels)}  {os.path.relpath(path, ROOT)}")
 
 
-# Le logo du menu principal est plaque sur une surface plus large que haute :
-# le jeu etire l'image dessus. 2.0 = surface deux fois plus large que haute.
-# A reajuster si le logo ressort encore ovale (plus large => monter la valeur).
-CYLINDER_SQUEEZE = 2.0
+# Part du canvas occupee par le logo du menu principal. Baisser cette valeur
+# affiche un logo plus petit, sans le deformer : le reste reste transparent.
+CYLINDER_FILL = 0.5
 
 # Textures GUI : affichees a leur taille native, en pixels ecran. 512 tient
 # dans la hauteur d'un ecran 720p ; au-dela le logo deborde.
@@ -100,7 +98,7 @@ gui = {
 
 # Unites 3D du menu : mips pour eviter le scintillement a distance.
 units = {
-    "units/menu/menu_scene/menu_cylinder_logo": fit(1024, 1024, CYLINDER_SQUEEZE),
+    "units/menu/menu_scene/menu_cylinder_logo": fit(1024, 1024, CYLINDER_FILL),
 }
 
 for rel, img in gui.items():
