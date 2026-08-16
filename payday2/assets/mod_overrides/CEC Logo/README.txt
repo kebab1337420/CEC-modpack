@@ -38,4 +38,21 @@ guides plus anciens le mentionnent : c'est le cas de
 units/menu/menu_backdrop/paydaylogo_df, disparu depuis le passage aux
 archives .crate.
 
+Deformation du logo du menu
+---------------------------
+La texture menu_cylinder_logo est projetee sur un disque 3D vu de biais : le
+jeu l'ecrase verticalement. Le logo est donc pre-comprime horizontalement d'un
+facteur 3.7 pour ressortir rond, valeur mesuree en jeu avec une mire de cinq
+anneaux pre-comprimes de facteurs connus (voir CYLINDER_STRETCH dans le
+script). Cette mesure a ete necessaire faute de pouvoir extraire la texture
+d'origine : les archives .crate indexent leurs entrees par un hash 64 bits qui
+n'a pas ete identifie.
+
+Ce meme disque est reaffiche pendant le chargement d'une map, sous un angle de
+camera bien plus rasant : le logo y parait aplati, environ deux fois plus qu'au
+menu. Le hashlist ne contient qu'une seule texture de logo pour ce disque, donc
+aucune valeur ne peut le rendre rond aux deux endroits. Le reglage actuel
+privilegie le menu principal ; l'aplatissement a l'ecran de chargement est
+assume, et c'est aussi l'aspect qu'y avait le logo PAYDAY 2 d'origine.
+
 Le script de generation est dans tools/gen_cec_logo.py.
