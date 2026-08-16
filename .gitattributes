@@ -18,3 +18,4 @@
 *.dds        binary
 *.ogg        binary
 *.wav        binary
+*.sig        binary
