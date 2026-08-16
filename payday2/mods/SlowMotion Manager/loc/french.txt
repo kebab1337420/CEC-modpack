@@ -8,6 +8,9 @@
 	"SlowMotionManager_language_english" : "Anglais",
 	"SlowMotionManager_language_french" : "Français",
 
+	"SlowMotionManager_enable_maskon_title" : "Masque équippé: Activé",
+	"SlowMotionManager_enable_maskon_desc" : "Active ou coupe le ralenti du masque équippé. Coupé, les réglages ci-dessous sont ignorés mais conservés.",
+
 	"SlowMotionManager_speed_maskon_title" : "Masque équippé: Puissance",
 	"SlowMotionManager_speed_maskon_desc" : "Affect la puissance des ralentis. Une petite valeur signifie un ralentis important et une très grosse valeur aucun ralentis du tout.",
 	"SlowMotionManager_fadein_maskon_title" : "Masque équippé: Entrée de Transition",
@@ -19,6 +22,9 @@
 	"SlowMotionManager_fadeout_maskon_title" : "Masque équippé: Transition de Sortie",
 	"SlowMotionManager_fadeout_maskon_desc" : "Affect la Transition de Sortie du ralenti. Une petit valeur enlève la transition, une plus grande valeur donne une transition plus douce et plus longue.",
 
+	"SlowMotionManager_enable_downed_title" : "A terre: Activé",
+	"SlowMotionManager_enable_downed_desc" : "Active ou coupe le ralenti quand vous êtes à terre. Coupé, les réglages ci-dessous sont ignorés mais conservés.",
+
 	"SlowMotionManager_speed_downed_title" : "A terre: Puissance",
 	"SlowMotionManager_speed_downed_desc" : "Affect la puissance des ralentis. Une petite valeur signifie un ralentis important et une très grosse valeur aucun ralentis du tout.",
 	"SlowMotionManager_fadein_downed_title" : "A terre: Entrée de Transition",
@@ -27,6 +33,9 @@
 	"SlowMotionManager_sustain_downed_desc" : "Affect la durée du ralentis quand vous êtes à terre.",
 	"SlowMotionManager_fadeout_downed_title" : "A terre: Transition de Sortie",
 	"SlowMotionManager_fadeout_downed_desc" : "Affect la Transition de Sortie du ralenti. Une petit valeur enlève la transition, une plus grande valeur donne une transition plus douce et plus longue.",
+
+	"SlowMotionManager_enable_scripted_title" : "Scripté: Activé",
+	"SlowMotionManager_enable_scripted_desc" : "Active ou coupe les ralentis scriptés. Coupé, les réglages ci-dessous sont ignorés mais conservés.",
 
 	"SlowMotionManager_speed_scripted_title" : "Scripté: Puissance",
 	"SlowMotionManager_speed_scripted_desc" : "Affect la puissance des ralentis. Une petite valeur signifie un ralentis important et une très grosse valeur aucun ralentis du tout..",

@@ -22,6 +22,15 @@
 			"size" : 24
 		},
 		{
+			"type" : "toggle",
+			"id" : "SlowMotionManager_enable_maskon",
+			"title" : "SlowMotionManager_enable_maskon_title",
+			"description" : "SlowMotionManager_enable_maskon_desc",
+			"callback" : "SlowMotionManager_enable_maskon_callback",
+			"value" : "SlowMotionManager_enable_maskon",
+			"default_value" : true
+		},
+		{
 		    "type" : "slider",
 		    "id" : "SlowMotionManager_speed_maskon",
 		    "title" : "SlowMotionManager_speed_maskon_title",
@@ -86,6 +95,15 @@
 			"size" : 24
 		},
 		{
+			"type" : "toggle",
+			"id" : "SlowMotionManager_enable_downed",
+			"title" : "SlowMotionManager_enable_downed_title",
+			"description" : "SlowMotionManager_enable_downed_desc",
+			"callback" : "SlowMotionManager_enable_downed_callback",
+			"value" : "SlowMotionManager_enable_downed",
+			"default_value" : true
+		},
+		{
 		    "type" : "slider",
 		    "id" : "SlowMotionManager_speed_downed",
 		    "title" : "SlowMotionManager_speed_downed_title",
@@ -136,6 +154,15 @@
 		{
 			"type" : "divider",
 			"size" : 24
+		},
+		{
+			"type" : "toggle",
+			"id" : "SlowMotionManager_enable_scripted",
+			"title" : "SlowMotionManager_enable_scripted_title",
+			"description" : "SlowMotionManager_enable_scripted_desc",
+			"callback" : "SlowMotionManager_enable_scripted_callback",
+			"value" : "SlowMotionManager_enable_scripted",
+			"default_value" : true
 		},
 		{
 		    "type" : "slider",

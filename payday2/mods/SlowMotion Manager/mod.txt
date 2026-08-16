@@ -3,7 +3,7 @@
 	"description" : "Manage the slowmotion through many options.",
 	"author" : "Nepgearsy",
 	"contact" : "http://steamcommunity.com/id/Nepgearsy",
-	"version" : "1.70-d3",
+	"version" : "1.71-d3",
 	"priority" : 1000,
 	"blt_version" : 2,
 	"image" : "slowmo.png",

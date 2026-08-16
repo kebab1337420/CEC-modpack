@@ -17,21 +17,72 @@ SMM.localization = {
 	[2] = ModPath .. "loc/french.txt"
 }
 
--- Valeurs vanilla de TimeSpeedEffectTweakData (Diesel 3.0), plus la langue.
+-- Chaque section du menu : son interrupteur, et la correspondance entre les
+-- champs de TimeSpeedEffectTweakData et les options qui les pilotent.
+SMM.sections = {
+	{
+		id = "maskon",
+		toggle = "SlowMotionManager_enable_maskon",
+		fields = {
+			speed = "SlowMotionManager_speed_maskon",
+			fade_in_delay = "SlowMotionManager_fadeindelay_maskon",
+			fade_in = "SlowMotionManager_fadein_maskon",
+			sustain = "SlowMotionManager_sustain_maskon",
+			fade_out = "SlowMotionManager_fadeout_maskon"
+		}
+	},
+	{
+		id = "downed",
+		toggle = "SlowMotionManager_enable_downed",
+		fields = {
+			speed = "SlowMotionManager_speed_downed",
+			fade_in = "SlowMotionManager_fadein_downed",
+			sustain = "SlowMotionManager_sustain_downed",
+			fade_out = "SlowMotionManager_fadeout_downed"
+		}
+	},
+	{
+		id = "scripted",
+		toggle = "SlowMotionManager_enable_scripted",
+		fields = {
+			speed = "SlowMotionManager_speed_scripted",
+			fade_in_delay = "SlowMotionManager_fadeindelay_scripted",
+			fade_in = "SlowMotionManager_fadein_scripted",
+			sustain = "SlowMotionManager_sustain_scripted",
+			fade_out = "SlowMotionManager_fadeout_scripted"
+		}
+	}
+}
+
+-- Valeurs appliquees a une section desactivee : vitesse pleine, aucune
+-- transition, aucune duree.
+SMM.disabled_values = {
+	speed = 1,
+	fade_in_delay = 0,
+	fade_in = 0,
+	sustain = 0,
+	fade_out = 0
+}
+
+-- Valeurs vanilla de TimeSpeedEffectTweakData (Diesel 3.0), plus la langue et
+-- les interrupteurs.
 SMM.defaults = {
 	SlowMotionManager_language = 1,
 
+	SlowMotionManager_enable_maskon = true,
 	SlowMotionManager_speed_maskon = 0.2,
 	SlowMotionManager_fadein_maskon = 0.25,
 	SlowMotionManager_fadeindelay_maskon = 1.35,
 	SlowMotionManager_sustain_maskon = 5,
 	SlowMotionManager_fadeout_maskon = 0.8,
 
+	SlowMotionManager_enable_downed = true,
 	SlowMotionManager_speed_downed = 0.3,
 	SlowMotionManager_fadein_downed = 0.25,
 	SlowMotionManager_sustain_downed = 3,
 	SlowMotionManager_fadeout_downed = 0.8,
 
+	SlowMotionManager_enable_scripted = true,
 	SlowMotionManager_speed_scripted = 0.2,
 	SlowMotionManager_fadein_scripted = 0.3,
 	SlowMotionManager_fadeindelay_scripted = 0.5,
@@ -39,26 +90,13 @@ SMM.defaults = {
 	SlowMotionManager_fadeout_scripted = 0.8
 }
 
--- Valeurs appliquees par le bouton "No Slow Motion" : vitesse pleine, aucune
--- transition et aucune duree.
-SMM.no_slowmo = {
-	SlowMotionManager_speed_maskon = 1,
-	SlowMotionManager_fadein_maskon = 0,
-	SlowMotionManager_fadeindelay_maskon = 0,
-	SlowMotionManager_sustain_maskon = 0,
-	SlowMotionManager_fadeout_maskon = 0,
+-- Les items toggle rendent "on"/"off" et non un booleen, il faut savoir lesquels
+-- convertir dans les callbacks.
+SMM.booleans = {}
 
-	SlowMotionManager_speed_downed = 1,
-	SlowMotionManager_fadein_downed = 0,
-	SlowMotionManager_sustain_downed = 0,
-	SlowMotionManager_fadeout_downed = 0,
-
-	SlowMotionManager_speed_scripted = 1,
-	SlowMotionManager_fadein_scripted = 0,
-	SlowMotionManager_fadeindelay_scripted = 0,
-	SlowMotionManager_sustain_scripted = 0,
-	SlowMotionManager_fadeout_scripted = 0
-}
+for _, section in ipairs(SMM.sections) do
+	SMM.booleans[section.toggle] = true
+end
 
 SMM.options = {}
 
@@ -67,8 +105,9 @@ function SMM:Load()
 
 	self.options = type(loaded) == "table" and loaded or {}
 
-	-- Sans ce remplissage, une option absente du fichier vaut nil et les tweaks
-	-- retombaient sur 0, ce qui gele le temps au lieu d'appliquer le vanilla.
+	-- Sans ce remplissage, une option absente vaut nil et les tweaks retombaient
+	-- sur 0, ce qui gele le temps au lieu d'appliquer le vanilla. Ca reprend
+	-- aussi les fichiers ecrits avant l'ajout des interrupteurs.
 	for key, value in pairs(self.defaults) do
 		if self.options[key] == nil then
 			self.options[key] = value
@@ -95,6 +134,18 @@ function SMM:Get(key)
 	end
 
 	return value
+end
+
+---Valeurs a ecrire dans l'effet pour une section, interrupteur pris en compte.
+function SMM:SectionValues(section)
+	local values = {}
+	local enabled = self:Get(section.toggle)
+
+	for field, key in pairs(section.fields) do
+		values[field] = enabled and self:Get(key) or self.disabled_values[field]
+	end
+
+	return values
 end
 
 SMM:Load()

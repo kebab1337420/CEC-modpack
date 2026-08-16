@@ -8,6 +8,9 @@
 	"SlowMotionManager_language_english" : "English",
 	"SlowMotionManager_language_french" : "French",
 
+	"SlowMotionManager_enable_maskon_title" : "Mask-on: Enabled",
+	"SlowMotionManager_enable_maskon_desc" : "Turn the mask-on slowmotion on or off. When off, the settings below are ignored but kept.",
+
 	"SlowMotionManager_speed_maskon_title" : "Mask-on: Force",
 	"SlowMotionManager_speed_maskon_desc" : "Affects the slowmotion force. A low value means a big slowmotion, and a high value means no slowmotion at all.",
 	"SlowMotionManager_fadein_maskon_title" : "Mask-on: Fade In",
@@ -19,6 +22,9 @@
 	"SlowMotionManager_fadeout_maskon_title" : "Mask-on: Fade Out",
 	"SlowMotionManager_fadeout_maskon_desc" : "Affects the exit transition from the slowmotion. A low value give no transition, and a high value give a smoother and longer transition.",
 
+	"SlowMotionManager_enable_downed_title" : "Downed: Enabled",
+	"SlowMotionManager_enable_downed_desc" : "Turn the downed slowmotion on or off. When off, the settings below are ignored but kept.",
+
 	"SlowMotionManager_speed_downed_title" : "Downed: Force",
 	"SlowMotionManager_speed_downed_desc" : "Affects the slowmotion force. A low value means a big slowmotion, and a high value means no slowmotion at all.",
 	"SlowMotionManager_fadein_downed_title" : "Downed: Fade In",
@@ -27,6 +33,9 @@
 	"SlowMotionManager_sustain_downed_desc" : "Affects the delay of the slowmotion when you are downed.",
 	"SlowMotionManager_fadeout_downed_title" : "Downed: Fade Out",
 	"SlowMotionManager_fadeout_downed_desc" : "Affects the exit transition from the slowmotion. A low value give no transition, and a high value give a smoother and longer transition.",
+
+	"SlowMotionManager_enable_scripted_title" : "Scripted: Enabled",
+	"SlowMotionManager_enable_scripted_desc" : "Turn the scripted slowmotions on or off. When off, the settings below are ignored but kept.",
 
 	"SlowMotionManager_speed_scripted_title" : "Scripted: Force",
 	"SlowMotionManager_speed_scripted_desc" : "Affects the slowmotion force. A low value means a big slowmotion, and a high value means no slowmotion at all.",

@@ -9,11 +9,17 @@ local SMM = SlowMotionManager
 
 for key, _ in pairs(SMM.defaults) do
 	MenuCallbackHandler[key .. "_callback"] = function(self, item)
-		SMM:Set(key, item:value())
+		local value = item:value()
+
+		if SMM.booleans[key] then
+			value = value == "on" or value == true
+		end
+
+		SMM:Set(key, value)
 	end
 end
 
--- ResetItemsToDefaultValue ne touche que l'affichage du slider : sans ecriture
+-- ResetItemsToDefaultValue ne touche que l'affichage de l'item : sans ecriture
 -- explicite dans les options, les deux boutons ci-dessous ne persistaient rien.
 local function apply_preset(item, preset)
 	for key, value in pairs(preset) do
@@ -36,6 +42,14 @@ MenuCallbackHandler.SlowMotionManager_reset_callback = function(self, item)
 	apply_preset(item, preset)
 end
 
+-- Coupe les trois interrupteurs plutot que d'ecraser les curseurs : les reglages
+-- sont conserves et reviennent tels quels si on rallume une section.
 MenuCallbackHandler.SlowMotionManager_noslowmo_callback = function(self, item)
-	apply_preset(item, SMM.no_slowmo)
+	local preset = {}
+
+	for _, section in ipairs(SMM.sections) do
+		preset[section.toggle] = false
+	end
+
+	apply_preset(item, preset)
 end
