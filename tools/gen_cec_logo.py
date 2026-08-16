@@ -29,16 +29,21 @@ src = Image.open(SRC).convert("RGBA")
 src = src.crop(src.getbbox())  # logo serre, sans marge transparente
 
 
-def fit(canvas_w, canvas_h, fill=1.0):
-    """Logo centre sur un canvas transparent, ratio du logo preserve.
+def fit(canvas_w, canvas_h, fill=1.0, stretch=1.0):
+    """Logo centre sur un canvas transparent.
 
     fill est la part du canvas occupee par le logo : 1.0 le fait toucher les
     bords, 0.5 le laisse a la moitie. Le reste du canvas est transparent, donc
-    reduire fill revient a afficher un logo plus petit sans jamais le deformer.
+    baisser fill affiche un logo plus petit sans jamais le deformer.
+
+    stretch decrit la surface qui affichera la texture : c'est le facteur dont
+    le jeu etire l'image horizontalement, mesure par rapport a une texture
+    carree. Le logo est dessine du facteur inverse pour ressortir rond.
     """
-    scale = min(canvas_w / src.width, canvas_h / src.height) * fill
-    w = max(1, round(src.width * scale))
-    h = max(1, round(src.height * scale))
+    aspect = (canvas_w / canvas_h) / stretch  # largeur/hauteur voulue en pixels
+    h = min(canvas_h, canvas_w / aspect) * fill
+    w = h * aspect
+    w, h = max(1, round(w)), max(1, round(h))
     logo = src.resize((w, h), Image.LANCZOS)
     canvas = Image.new("RGBA", (canvas_w, canvas_h), (0, 0, 0, 0))
     canvas.paste(logo, ((canvas_w - w) // 2, (canvas_h - h) // 2), logo)
@@ -84,9 +89,17 @@ def save_texture(img, path, mipmaps=False):
     print(f"{w}x{h} mips={len(levels)}  {os.path.relpath(path, ROOT)}")
 
 
-# Part du canvas occupee par le logo du menu principal. Baisser cette valeur
-# affiche un logo plus petit, sans le deformer : le reste reste transparent.
-CYLINDER_FILL = 0.5
+# Surface du menu principal : le jeu y etire la texture 3.7 fois plus en
+# largeur qu'en hauteur. Mesure en jeu avec une mire de 5 anneaux pre-comprimes
+# de facteurs connus ; deux anneaux lisibles ont donne 3.76 et 3.60.
+CYLINDER_STRETCH = 3.7
+
+# Part de la surface occupee par le logo. Baisser pour un logo plus petit.
+CYLINDER_FILL = 0.7
+
+# Canvas au ratio de la surface : le logo y tient en pleine hauteur, sans
+# gacher de resolution horizontale comme le ferait un canvas carre.
+CYLINDER_SIZE = (4096, 1024)
 
 # Textures GUI : affichees a leur taille native, en pixels ecran. 512 tient
 # dans la hauteur d'un ecran 720p ; au-dela le logo deborde.
@@ -98,7 +111,9 @@ gui = {
 
 # Unites 3D du menu : mips pour eviter le scintillement a distance.
 units = {
-    "units/menu/menu_scene/menu_cylinder_logo": fit(1024, 1024, CYLINDER_FILL),
+    "units/menu/menu_scene/menu_cylinder_logo": fit(
+        *CYLINDER_SIZE, fill=CYLINDER_FILL, stretch=CYLINDER_STRETCH
+    ),
 }
 
 for rel, img in gui.items():
