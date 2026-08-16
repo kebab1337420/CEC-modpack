@@ -29,8 +29,8 @@ src = Image.open(SRC).convert("RGBA")
 src = src.crop(src.getbbox())  # logo serre, sans marge transparente
 
 
-def fit(canvas_w, canvas_h, fill=1.0, stretch=1.0):
-    """Logo centre sur un canvas transparent.
+def fit(canvas_w, canvas_h, fill=1.0, stretch=1.0, offset_x=0.0):
+    """Logo place sur un canvas transparent.
 
     fill est la part du canvas occupee par le logo : 1.0 le fait toucher les
     bords, 0.5 le laisse a la moitie. Le reste du canvas est transparent, donc
@@ -39,6 +39,9 @@ def fit(canvas_w, canvas_h, fill=1.0, stretch=1.0):
     stretch decrit la surface qui affichera la texture : c'est le facteur dont
     le jeu etire l'image horizontalement, mesure par rapport a une texture
     carree. Le logo est dessine du facteur inverse pour ressortir rond.
+
+    offset_x decale le logo horizontalement, en part de la largeur du canvas :
+    negatif vers la gauche, positif vers la droite, 0 centre.
     """
     aspect = (canvas_w / canvas_h) / stretch  # largeur/hauteur voulue en pixels
     h = min(canvas_h, canvas_w / aspect) * fill
@@ -46,7 +49,9 @@ def fit(canvas_w, canvas_h, fill=1.0, stretch=1.0):
     w, h = max(1, round(w)), max(1, round(h))
     logo = src.resize((w, h), Image.LANCZOS)
     canvas = Image.new("RGBA", (canvas_w, canvas_h), (0, 0, 0, 0))
-    canvas.paste(logo, ((canvas_w - w) // 2, (canvas_h - h) // 2), logo)
+    x = (canvas_w - w) // 2 + round(offset_x * canvas_w)
+    x = max(0, min(canvas_w - w, x))  # jamais rogne par le bord du canvas
+    canvas.paste(logo, (x, (canvas_h - h) // 2), logo)
     return canvas
 
 
@@ -95,7 +100,10 @@ def save_texture(img, path, mipmaps=False):
 CYLINDER_STRETCH = 3.7
 
 # Part de la surface occupee par le logo. Baisser pour un logo plus petit.
-CYLINDER_FILL = 0.7
+CYLINDER_FILL = 0.56
+
+# Decalage horizontal, en part de la largeur de la surface : negatif = gauche.
+CYLINDER_OFFSET_X = -0.06
 
 # Canvas au ratio de la surface : le logo y tient en pleine hauteur, sans
 # gacher de resolution horizontale comme le ferait un canvas carre.
@@ -112,7 +120,8 @@ gui = {
 # Unites 3D du menu : mips pour eviter le scintillement a distance.
 units = {
     "units/menu/menu_scene/menu_cylinder_logo": fit(
-        *CYLINDER_SIZE, fill=CYLINDER_FILL, stretch=CYLINDER_STRETCH
+        *CYLINDER_SIZE, fill=CYLINDER_FILL, stretch=CYLINDER_STRETCH,
+        offset_x=CYLINDER_OFFSET_X,
     ),
 }
 

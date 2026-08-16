@@ -6,3 +6,6 @@ payday2/mods/downloads/
 
 # Dossier de transit : archives et images sources en attente d'integration.
 truc à ajouter/
+# Caches Python des scripts de tools/.
+__pycache__/
+*.pyc
