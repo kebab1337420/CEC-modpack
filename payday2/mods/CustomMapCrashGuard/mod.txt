@@ -3,7 +3,7 @@
 	"description" : "Traces the engine-side access violations custom maps die on -- workspaces, viewports, mission elements -- into mods/saves/crashguard.log, flushed line by line so the last line survives the crash. Drops double destroys of workspaces and viewports.",
 	"author" : "Proving Grounds debug",
 	"contact" : "",
-	"version" : "2.1",
+	"version" : "2.2",
 	"priority" : 1000,
 	"hooks" : [
 		{

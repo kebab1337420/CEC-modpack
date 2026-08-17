@@ -15,7 +15,7 @@ end
 local CMCG = {}
 _G.CustomMapCrashGuard = CMCG
 
-CMCG.VERSION = "2.1"
+CMCG.VERSION = "2.2"
 
 -- Guards that actually change behaviour. Trace-only by default except for the
 -- ones that cannot make anything worse.
@@ -43,7 +43,32 @@ end
 
 CMCG.now = now
 
--- Every line is flushed by closing the file. Slow on purpose.
+-- A tree dump of a level full of gui props is tens of thousands of lines, and
+-- one open/append/close per line takes minutes. During a dump the handle is kept
+-- open and flushed per line instead: the file on disk is still complete up to
+-- the faulting instruction, which is the only property that matters here.
+function CMCG:open_batch()
+	if self.batch then
+		return
+	end
+
+	self.batch = io.open(path, "a")
+end
+
+function CMCG:close_batch()
+	if not self.batch then
+		return
+	end
+
+	pcall(function()
+		self.batch:close()
+	end)
+
+	self.batch = nil
+end
+
+-- Every line is flushed by closing the file, or by an explicit flush inside a
+-- batch. Slow on purpose.
 function CMCG:write(fmt, ...)
 	local line
 
@@ -60,14 +85,21 @@ function CMCG:write(fmt, ...)
 
 	line = string.format("[%6d %8.2f] %s", self.seq, now(), line)
 
-	local f = io.open(path, "a")
+	if self.batch then
+		self.batch:write(line, "\n")
+		self.batch:flush()
+	else
+		local f = io.open(path, "a")
 
-	if f then
-		f:write(line, "\n")
-		f:close()
+		if f then
+			f:write(line, "\n")
+			f:close()
+		end
 	end
 
-	log("[CrashGuard] " .. line)
+	if not self.batch then
+		log("[CrashGuard] " .. line)
+	end
 end
 
 function CMCG:stack(depth)

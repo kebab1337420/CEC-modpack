@@ -123,34 +123,43 @@ end
 
 -- Tree dump ----------------------------------------------------------------
 
--- Walks what Lua can see of a panel, the same vector the engine walks.
+-- Only the root panels matter -------------------------------------------------
 --
--- children() may only be called on an object that really is a panel. Every Gui
--- object shares one metatable, so children() on a Bitmap or a Text reaches the
--- same native accessor and reads +0x110/+0x118 on bytes that are not a vector,
--- which faults exactly like the bug being hunted. The kind registry below is
--- filled at creation time, and only objects recorded as panels are recursed into.
-local function dump(obj, depth, prefix)
-	depth = depth or 0
-
-	if depth > 8 then
-		return
-	end
-
+-- The fault site reads the children vector of the object at workspace + 0x68,
+-- which is the workspace's root panel, and calls the first child's virtual
+-- method. So the broken parent is always a root panel, and the broken child is
+-- always one of its direct children. There is no need to walk the tree deeply --
+-- and no way to do it safely, because every Gui object shares one metatable, so
+-- children() on a Bitmap or a Text reads +0x110/+0x118 on bytes that are not a
+-- vector and faults exactly like the bug being hunted. Depth 0 only.
+--
+-- A child is a suspect when the structure says the engine would deref freed
+-- memory:
+--   * it does not answer its accessors at all
+--   * this mod saw it removed or cleared, yet it is still in the vector
+--   * its own parent() is not the panel that lists it -- a dangling entry
+--
+-- kind == nil is *not* a suspect: objects loaded from a .gui file are created
+-- natively and were never seen by Lua.
+local function inspect_root(panel, root, prefix)
 	local ok_children, children = pcall(function()
-		return obj:children()
+		return panel:children()
 	end)
 
 	if not ok_children or type(children) ~= "table" then
-		CMCG:write("%s<<< children() FAILED on %s", prefix, key_of(obj))
+		CMCG:write("%s<<< children() FAILED on root %s", prefix, root)
 
-		return
+		return true
 	end
+
+	local suspect = false
+
+	CMCG:write("%s%d child(ren)", prefix, #children)
 
 	for i, child in ipairs(children) do
 		-- Written before the child is touched, so if reading it faults the log
-		-- already names the parent and the index.
-		CMCG:write("%s[%d] probing under parent %s", prefix, i, key_of(obj))
+		-- already names the root panel and the index.
+		CMCG:write("%s[%d] probing under root %s", prefix, i, root)
 
 		local k = key_of(child)
 		local kind = CMCG.kind[k]
@@ -161,37 +170,57 @@ local function dump(obj, depth, prefix)
 		local ok_vis, vis = pcall(function()
 			return child:visible()
 		end)
-		local ok_alive = pcall(function()
+		local ok_layer = pcall(function()
 			local _ = child:layer()
-			local _ = child:parent()
 		end)
 
+		local parent_key = "?"
+		local ok_parent, parent = pcall(function()
+			return child:parent()
+		end)
+
+		if ok_parent and parent ~= nil then
+			parent_key = key_of(parent)
+		end
+
+		local dangling = ok_parent and parent ~= nil and parent_key ~= root
+		local unreadable = not ok_name or not ok_vis or not ok_layer or not ok_parent
+
+		if dangling or unreadable or CMCG.dead[k] then
+			suspect = true
+		end
+
 		CMCG:write(
-			"%s[%d] %s kind=%s name=%s vis=%s%s%s%s",
+			"%s[%d] %s kind=%s name=%s vis=%s parent=%s%s%s%s",
 			prefix,
 			i,
 			k,
-			tostring(kind or "UNKNOWN"),
+			tostring(kind or "not-from-lua"),
 			ok_name and tostring(name) or "?",
 			ok_vis and tostring(vis) or "?",
-			ok_alive and "" or " <<< UNREADABLE",
+			parent_key,
+			unreadable and " <<< UNREADABLE" or "",
 			CMCG.dead[k] and " <<< ALREADY DESTROYED" or "",
-			kind == nil and " <<< NOT CREATED THROUGH LUA" or ""
+			dangling and " <<< DANGLING, parent does not match" or ""
 		)
 
-		if kind == nil or CMCG.dead[k] then
+		if dangling or unreadable or CMCG.dead[k] then
 			CMCG:write("%s     origin: %s", prefix, tostring(CMCG.origin[k] or "unknown"))
 		end
-
-		if kind == "panel" then
-			dump(child, depth + 1, prefix .. "  ")
-		end
 	end
+
+	return suspect
 end
 
--- Dumps every workspace this mod knows about, root panel first. Called every
--- frame for the first frames of a level, so the tail of the log is the state of
--- the tree on the frame that faulted. Every line is flushed as it is produced.
+-- Walks every workspace this mod knows about and quarantines the broken ones.
+--
+-- Quarantine is the fix, not just a trace: a workspace whose root panel lists a
+-- child the engine would deref is handed back with destroy_workspace, which takes
+-- it out of the Gui's workspace list at [gui + 0x70 .. 0x78). The per-frame walk
+-- then never reaches it. Losing one gui prop is the whole cost.
+--
+-- Called on the first update ticks of the level, before the frame the fault
+-- normally lands on.
 function CMCG:dump_tree(tag)
 	local count = 0
 
@@ -200,6 +229,9 @@ function CMCG:dump_tree(tag)
 	end
 
 	self:write("tree %s: %d workspace(s)", tostring(tag), count)
+	self:open_batch()
+
+	local quarantine = {}
 
 	for k, ws in pairs(self.live_workspaces) do
 		local ok_panel, panel = pcall(function()
@@ -208,6 +240,8 @@ function CMCG:dump_tree(tag)
 
 		if not ok_panel or not panel then
 			self:write("ws %s <<< ROOT PANEL UNREADABLE | origin: %s", k, tostring(self.origin[k] or "unknown"))
+
+			quarantine[#quarantine + 1] = k
 		else
 			local root = key_of(panel)
 
@@ -215,11 +249,48 @@ function CMCG:dump_tree(tag)
 
 			self:write("ws %s root=%s", k, root)
 
-			dump(panel, 0, "    ")
+			if inspect_root(panel, root, "    ") then
+				quarantine[#quarantine + 1] = k
+			end
 		end
 	end
 
-	self:write("tree %s done", tostring(tag))
+	self:close_batch()
+
+	-- Collected first, destroyed after the walk: destroying inside the pairs loop
+	-- would mutate live_workspaces while it is being iterated.
+	for _, k in ipairs(quarantine) do
+		local ws = self.live_workspaces[k]
+
+		self:write("QUARANTINE ws %s | origin: %s", k, tostring(self.origin[k] or "unknown"))
+
+		if ws ~= nil then
+			-- Hidden first: if destroy_workspace itself is what faults, a hidden
+			-- workspace is at least skipped by the render walk.
+			pcall(function()
+				ws:hide()
+			end)
+
+			local ok_gui, gui = pcall(function()
+				return ws:gui()
+			end)
+
+			if ok_gui and gui ~= nil then
+				local ok_destroy = pcall(function()
+					gui:destroy_workspace(ws)
+				end)
+
+				self:write("QUARANTINE ws %s destroyed=%s", k, tostring(ok_destroy))
+			else
+				self:write("QUARANTINE ws %s has no reachable gui, left hidden", k)
+			end
+
+			self.live_workspaces[k] = nil
+			self.dead[k] = true
+		end
+	end
+
+	self:write("tree %s done, %d quarantined", tostring(tag), #quarantine)
 end
 
 -- Wiring -------------------------------------------------------------------

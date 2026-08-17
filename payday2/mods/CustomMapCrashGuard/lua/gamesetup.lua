@@ -34,7 +34,10 @@ wire_late_traces()
 -- the state machine is still "empty". So the first ticks are logged one by one
 -- with a full dump of the Gui tree, and only then does the heartbeat drop to
 -- twice a second.
-local VERBOSE_BEATS = 30
+-- Three ticks is enough: tick 1 is the one the fault lands on and the one that
+-- quarantines the broken workspaces, ticks 2 and 3 say whether the tree came back
+-- clean. Thirty full dumps of a level with 500 gui props is minutes of disk.
+local VERBOSE_BEATS = 3
 
 Hooks:Add("GameSetupUpdate", "CustomMapCrashGuardHeartbeat", function(t, dt)
 	wire_late_traces()
@@ -91,6 +94,14 @@ end)
 
 Hooks:PostHook(GameSetup, "init_finalize", "CustomMapCrashGuardInitFinalize", function(self)
 	CMCG:write("GameSetup:init_finalize done")
+
+	-- Earliest point at which the whole world is built and no update tick has run
+	-- yet, so this is the last chance to take a broken workspace out of the Gui's
+	-- list before the engine walks it. The heartbeat dump on tick 1 is a second
+	-- chance, not the first one.
+	if CMCG.dump_tree then
+		pcall(CMCG.dump_tree, CMCG, "init_finalize")
+	end
 end)
 
 if GameSetup.close then
