@@ -4,11 +4,28 @@
 
 		BootupState:setup() (lib/states/bootupstate.lua) termine sa playlist par
 		l'entree { video = "movies/game_intro" }. On reenregistre cet asset vers
-		un fichier Bink 2 local via DB:create_entry (BeardLib -> BLT.AssetManager).
+		un fichier Bink local via DB:create_entry (BeardLib -> BLT.AssetManager).
 
 		mod_overrides n'accepte pas l'extension .movie : le passage par BeardLib
 		est obligatoire. AddFiles utilise force=true par defaut, donc l'entree
 		vanilla est bien ecrasee.
+
+		Encodage de assets/movies/game_intro.movie (Bink 1, BIKk) : la premiere
+		version en 1080p a 18,7 Mbit/s (72 Mo) saccadait, le decodage et le
+		streaming du fichier entrant en concurrence avec le chargement des
+		assets au demarrage. Recette actuelle, 1280x720 a 30 fps et
+		4,8 Mbit/s (18,6 Mo), fluide :
+
+			ffmpeg -i source.mp4 -vf "scale=1280:720:flags=lanczos,fps=30" \
+			       -c:v mjpeg -q:v 3 -c:a pcm_s16le -ar 44100 -ac 2 inter.avi
+			binkc.exe inter.avi game_intro.movie /D600000 /O
+
+		/D est le debit cible en octets par seconde ; binkc depense tout le
+		budget, donc le baisser est le seul levier utile. Ne pas ajouter /K ni
+		/M : binkc sort alors sans rien ecrire et sans message d'erreur.
+		ffmpeg signale "Unknown block type" a la lecture des .movie du jeu
+		comme des notres : son decodeur Bink est incomplet, ce n'est pas un
+		fichier casse.
 	-->
 	<AddFiles directory="assets">
 		<movie path="movies/game_intro"/>
