@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Revive Chain",
+	"description" : "Recompense les chaines de relevages : chaque coequipier releve sans tomber soi-meme rend de la sante, et une pile pleine remet aussi le gilet a neuf. A l'inverse, chaque chute personnelle casse la chaine et reduit la sante rendue au relevage suivant.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}

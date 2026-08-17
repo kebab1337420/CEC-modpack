@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<mod name="CEC Revive Chain">
+	<hooks>
+		<post hook_id="lib/units/interactions/interactionext" script_path="hooks/interaction.lua"/>
+		<post hook_id="lib/units/beings/player/playerdamage" script_path="hooks/damage.lua"/>
+	</hooks>
+</mod>

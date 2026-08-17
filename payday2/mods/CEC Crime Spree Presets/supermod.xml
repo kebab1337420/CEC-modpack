@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<mod name="CEC Crime Spree Presets">
+	<hooks>
+		<post hook_id="lib/managers/menu/crimespreemodifiersmenucomponent" script_path="hooks/modifiers.lua"/>
+	</hooks>
+</mod>

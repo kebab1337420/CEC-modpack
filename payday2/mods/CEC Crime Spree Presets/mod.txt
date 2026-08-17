@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Crime Spree Presets",
+	"description" : "Presurligne automatiquement le modificateur de Crime Spree prefere a chaque montee de niveau, selon une liste de priorites enregistree dans un preset editable.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}

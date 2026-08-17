@@ -1,0 +1,64 @@
+{
+	"name" : "CEC Loadout Profiles",
+	"description" : "Enregistre et rappelle trois panoplies completes (armes, masque, gilet, corps a corps, grenade, equipements, arbre de competences, deck de perks) depuis le menu, en une touche.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4",
+	"keybinds" : [
+		{
+			"keybind_id" : "cec_loadout_load_1",
+			"name" : "CEC Loadout : charger le profil 1",
+			"description" : "Applique le profil 1 enregistre.",
+			"script_path" : "keybinds/load_1.lua",
+			"localized" : false,
+			"run_in_menu" : true,
+			"run_in_game" : false
+		},
+		{
+			"keybind_id" : "cec_loadout_load_2",
+			"name" : "CEC Loadout : charger le profil 2",
+			"description" : "Applique le profil 2 enregistre.",
+			"script_path" : "keybinds/load_2.lua",
+			"localized" : false,
+			"run_in_menu" : true,
+			"run_in_game" : false
+		},
+		{
+			"keybind_id" : "cec_loadout_load_3",
+			"name" : "CEC Loadout : charger le profil 3",
+			"description" : "Applique le profil 3 enregistre.",
+			"script_path" : "keybinds/load_3.lua",
+			"localized" : false,
+			"run_in_menu" : true,
+			"run_in_game" : false
+		},
+		{
+			"keybind_id" : "cec_loadout_save_1",
+			"name" : "CEC Loadout : enregistrer le profil 1",
+			"description" : "Ecrase le profil 1 avec la panoplie actuelle.",
+			"script_path" : "keybinds/save_1.lua",
+			"localized" : false,
+			"run_in_menu" : true,
+			"run_in_game" : false
+		},
+		{
+			"keybind_id" : "cec_loadout_save_2",
+			"name" : "CEC Loadout : enregistrer le profil 2",
+			"description" : "Ecrase le profil 2 avec la panoplie actuelle.",
+			"script_path" : "keybinds/save_2.lua",
+			"localized" : false,
+			"run_in_menu" : true,
+			"run_in_game" : false
+		},
+		{
+			"keybind_id" : "cec_loadout_save_3",
+			"name" : "CEC Loadout : enregistrer le profil 3",
+			"description" : "Ecrase le profil 3 avec la panoplie actuelle.",
+			"script_path" : "keybinds/save_3.lua",
+			"localized" : false,
+			"run_in_menu" : true,
+			"run_in_game" : false
+		}
+	]
+}
