@@ -73,23 +73,38 @@ local function __set_ogg_volume(__volume)
 	return
 end
 
+-- The HUD is torn down and rebuilt on every state change, which destroys the
+-- panel and the bitmap. The Lua reference stays behind and points at freed
+-- memory, so every use has to be guarded with alive().
+local function __get_pic()
+	local bitmap = _G[ThisBitmap]
+	if bitmap and alive(bitmap) then
+		return bitmap
+	end
+	_G[ThisBitmap] = nil
+	return nil
+end
+
 local function __ply_pic()
-	if _G[ThisBitmap] then
-		_G[ThisBitmap]:set_visible(true)
+	local bitmap = __get_pic()
+	if bitmap then
+		bitmap:set_visible(true)
 	end
 	return
 end
 
 local function __end_pic()
-	if _G[ThisBitmap] then
-		_G[ThisBitmap]:set_visible(false)
+	local bitmap = __get_pic()
+	if bitmap then
+		bitmap:set_visible(false)
 	end
 	return
 end
 
 local function __set_pic_alpha(__alpha)
-	if _G[ThisBitmap] then
-		_G[ThisBitmap]:set_alpha(math.max(__alpha, 0))
+	local bitmap = __get_pic()
+	if bitmap then
+		bitmap:set_alpha(math.max(__alpha, 0))
 	end
 	return
 end
@@ -139,20 +154,42 @@ if PlayerDamage then
 end
 
 if HUDManager then
+	-- HUDManager is a singleton that survives every state change, so nothing
+	-- here may be cached on it: the original version kept the fullscreen panel
+	-- in self[panel1] and reused it on the next layout, by which time the
+	-- engine had already destroyed it. Calling :bitmap() on that freed panel is
+	-- an access violation, one per heist entry.
+	local bitmap_name = __Name("bitmap1")
+
 	Hooks:PostHook(HUDManager, "_player_hud_layout", __Name("_player_hud_layout"), function(self)
-		local name1 = __Name("name1")
-		local panel1 = __Name("panel1")
-		local bitmap1 = __Name("bitmap1")
-		local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-		self[panel1] = self[panel1] or hud and hud.panel or self._ws:panel({name = name1})
-		self[bitmap1] = self[panel1]:bitmap({
+		_G[ThisBitmap] = nil
+
+		local hud = managers.hud and managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
+		local panel = hud and hud.panel
+		if not panel or not alive(panel) then
+			return
+		end
+
+		-- A layout can run several times on the same panel; drop the previous
+		-- bitmap instead of stacking a new one on top of it every time.
+		local previous = panel:child(bitmap_name)
+		if previous then
+			panel:remove(previous)
+		end
+
+		local ok, bitmap = pcall(panel.bitmap, panel, {
+			name = bitmap_name,
 			texture = ThisTexture,
 			color = Color.white:with_alpha(1),
 			alpha = 1,
 			layer = 1
 		})
-		self[bitmap1]:set_size(self[panel1]:w(), self[panel1]:h())
-		self[bitmap1]:set_visible(false)
-		_G[ThisBitmap] = self[bitmap1]
+		if not ok or not bitmap then
+			return
+		end
+
+		bitmap:set_size(panel:w(), panel:h())
+		bitmap:set_visible(false)
+		_G[ThisBitmap] = bitmap
 	end)
 end

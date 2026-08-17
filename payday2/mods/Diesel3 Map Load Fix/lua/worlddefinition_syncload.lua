@@ -10,9 +10,18 @@
 -- loading. The engine dereferences a resource that is not resident yet ->
 -- access violation, with no Lua stack in the crash log.
 --
--- This file removes that fallback and replaces it with a BLOCKING load (the same
--- call BeardLib itself uses in FileManager:ForceEarlyLoad), so a unit is
--- guaranteed to be resident before it is spawned.
+-- This file removes that fallback and replaces it with a BLOCKING load, so a
+-- unit is guaranteed to be resident before it is spawned.
+--
+-- The blocking load MUST go through DynamicResourceManager:load() with no
+-- completion callback. An earlier version called
+--   PackageManager:package("packages/dyn_resources"):load_temp_resource(...)
+-- directly (the call BeardLib uses in FileManager:ForceEarlyLoad for single
+-- font files). That bypasses the manager's bookkeeping: the resource is not
+-- reference counted, so the same unit could be held by our temp load and by the
+-- level package at the same time, and the first unload freed memory the other
+-- one was still using. The result was heap corruption -- an access violation
+-- inside the engine allocator, minutes after loading, with no Lua stack.
 --
 -- It is deliberately no-worse-than-before: if the blocking load is unavailable
 -- or throws, we fall through to BeardLib's original asynchronous call.
@@ -24,31 +33,34 @@ core:module("CoreWorldDefinition")
 WorldDefinition = WorldDefinition or CoreWorldDefinition.WorldDefinition
 
 local unit_ids = Idstring("unit")
-local dyn_pkg = "packages/dyn_resources"
 
 local BEARDLIB_HOOK_ID = "BeardLibEnsureUnitsAreLoaded"
 local OUR_HOOK_ID = "Diesel3MapLoadFixEnsureUnitsLoaded"
 
 local stats = {sync = 0, async = 0}
 
--- Blocking load through the dynamic resource package. Returns true only if the
--- unit is actually resident afterwards.
+-- Blocking, reference counted load through DynamicResourceManager. Passing
+-- false as the completion callback makes the load synchronous; the manager
+-- keeps the reference count and unloads the resource itself at the end of the
+-- level. Returns true only if the unit is actually resident afterwards.
 local function sync_load(name_ids)
-	if not PackageManager:loaded(dyn_pkg) then
-		if PackageManager.package_exists and not PackageManager:package_exists(dyn_pkg) then
-			return false
-		end
-		if not pcall(PackageManager.load, PackageManager, dyn_pkg) then
-			return false
-		end
-	end
-
-	local pkg = PackageManager:package(dyn_pkg)
-	if not pkg or not pkg.load_temp_resource then
+	local dres = managers and managers.dyn_resource
+	if not dres or not dres.load then
 		return false
 	end
 
-	if not pcall(pkg.load_temp_resource, pkg, unit_ids, name_ids, nil, true) then
+	local pkg = DynamicResourceManager and DynamicResourceManager.DYN_RESOURCES_PACKAGE or dres.DYN_RESOURCES_PACKAGE
+	if not pkg then
+		return false
+	end
+
+	-- Already held by the manager: touching it again would only add a second
+	-- reference we never release.
+	if dres.has_resource and dres:has_resource(unit_ids, name_ids, pkg) then
+		return PackageManager:has(unit_ids, name_ids)
+	end
+
+	if not pcall(dres.load, dres, unit_ids, name_ids, pkg, false) then
 		return false
 	end
 
