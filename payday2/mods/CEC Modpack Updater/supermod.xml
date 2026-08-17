@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<mod name="CEC Modpack Updater">
+	<hooks>
+		<post hook_id="lib/managers/menumanager" script_path="hooks/menu.lua"/>
+	</hooks>
+</mod>

@@ -1,0 +1,19 @@
+{
+	"name" : "CEC Mod Conflict Checker",
+	"description" : "Detecte au demarrage les mods qui hookent le meme fichier moteur, les assets mod_overrides revendiques par plusieurs mods et les mods en erreur.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.95 0.6 0.1",
+	"keybinds" : [
+		{
+			"keybind_id" : "cec_conflict_scan",
+			"name" : "Relancer le scan de conflits CEC",
+			"description" : "Reecrit cec_conflicts.txt dans le dossier de sauvegarde.",
+			"script_path" : "hooks/keybind.lua",
+			"run_in_menu" : true,
+			"run_in_game" : false,
+			"localized" : false
+		}
+	]
+}

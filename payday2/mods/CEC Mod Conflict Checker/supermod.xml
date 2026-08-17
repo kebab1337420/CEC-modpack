@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<mod name="CEC Mod Conflict Checker">
+	<hooks>
+		<post hook_id="lib/managers/menumanager" script_path="hooks/menu.lua"/>
+	</hooks>
+</mod>
