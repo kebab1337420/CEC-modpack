@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<mod name="CEC Custom Difficulty Modifiers">
+	<hooks>
+		<post hook_id="lib/units/enemies/cop/copdamage" script_path="hooks/copdamage.lua"/>
+		<post hook_id="lib/units/beings/player/playerdamage" script_path="hooks/playerdamage.lua"/>
+	</hooks>
+</mod>

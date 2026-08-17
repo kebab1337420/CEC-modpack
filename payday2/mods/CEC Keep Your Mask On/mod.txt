@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Keep Your Mask On",
+	"description" : "Une fois le geste de mise du masque lance, il ne s'annule plus si la touche est relachee : le masque finit de se poser tout seul. Un rappel apparait aussi sur le HUD tant que la phase de reperage est en cours.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}

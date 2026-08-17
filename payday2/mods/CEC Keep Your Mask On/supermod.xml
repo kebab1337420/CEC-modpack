@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<mod name="CEC Keep Your Mask On">
+	<hooks>
+		<post hook_id="lib/units/beings/player/states/playermaskoff" script_path="hooks/maskoff.lua"/>
+	</hooks>
+</mod>

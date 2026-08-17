@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Custom Difficulty Modifiers",
+	"description" : "Regle la difficulte finement au-dela des paliers du jeu : multiplicateurs de vie des ennemis, de vie des unites speciales et de degats subis, lus dans un fichier JSON edite a la main (mods/saves/cec_difficulty_modifiers.json).",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}
