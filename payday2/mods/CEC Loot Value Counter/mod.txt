@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Loot Value Counter",
+	"description" : "Affiche en jeu le nombre de sacs securises (obligatoires et bonus) et la valeur totale du butin, sacs et petit butin compris, calculee avec le multiplicateur de difficulte du contrat.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}

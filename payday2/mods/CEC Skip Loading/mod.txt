@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Skip Loading",
+	"description" : "Supprime les ecrans de demarrage (avertissement de sauvegarde, ESRB, logo Starbreeze, texte legal) et passe automatiquement l'ecran titre. L'intro du modpack (movies/game_intro) est conservee.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}

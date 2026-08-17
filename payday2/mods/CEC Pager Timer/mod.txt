@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Pager Timer",
+	"description" : "Affiche sur le HUD le decompte reel avant le prochain appel du pager et le numero de l'appel en cours, en rouge quand le prochain declenche l'alarme.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}

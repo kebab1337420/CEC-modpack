@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<mod name="CEC Pager Timer">
+	<hooks>
+		<post hook_id="lib/units/enemies/cop/copbrain" script_path="hooks/pager.lua"/>
+		<post hook_id="lib/managers/hudmanagerpd2" script_path="hooks/hud.lua"/>
+	</hooks>
+</mod>

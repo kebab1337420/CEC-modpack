@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<mod name="CEC Auto Ready">
+	<hooks>
+		<post hook_id="lib/managers/menu/missionbriefinggui" script_path="hooks/briefing.lua"/>
+	</hooks>
+</mod>

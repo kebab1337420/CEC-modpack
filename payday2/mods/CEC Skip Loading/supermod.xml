@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<mod name="CEC Skip Loading">
+	<hooks>
+		<post hook_id="lib/states/bootupstate" script_path="hooks/bootup.lua"/>
+		<post hook_id="lib/states/menutitlescreenstate" script_path="hooks/titlescreen.lua"/>
+	</hooks>
+</mod>

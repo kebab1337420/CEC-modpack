@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<mod name="CEC Enemy Health Bars">
+	<hooks>
+		<post hook_id="lib/managers/hudmanagerpd2" script_path="hooks/hud.lua"/>
+	</hooks>
+</mod>

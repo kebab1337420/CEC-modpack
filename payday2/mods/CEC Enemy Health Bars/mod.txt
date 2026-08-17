@@ -1,0 +1,8 @@
+{
+	"name" : "CEC Enemy Health Bars",
+	"description" : "Affiche sous le viseur le nom, la barre de vie et la reduction de degats de l'ennemi vise. Le panneau reste visible une seconde apres la perte de la cible.",
+	"author" : "Alaric",
+	"version" : "1.0",
+	"blt_version" : 2.0,
+	"color" : "0.4 0.8 0.4"
+}
