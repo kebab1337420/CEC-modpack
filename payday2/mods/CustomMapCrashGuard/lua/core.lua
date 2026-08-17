@@ -15,7 +15,7 @@ end
 local CMCG = {}
 _G.CustomMapCrashGuard = CMCG
 
-CMCG.VERSION = "1.0"
+CMCG.VERSION = "2.1"
 
 -- Guards that actually change behaviour. Trace-only by default except for the
 -- ones that cannot make anything worse.
@@ -54,7 +54,11 @@ function CMCG:write(fmt, ...)
 		line = tostring(fmt)
 	end
 
-	line = string.format("[%8.2f] %s", now(), line)
+	-- Application.time reads 0 for the whole of level load, so a sequence number
+	-- carries the ordering instead.
+	self.seq = (self.seq or 0) + 1
+
+	line = string.format("[%6d %8.2f] %s", self.seq, now(), line)
 
 	local f = io.open(path, "a")
 

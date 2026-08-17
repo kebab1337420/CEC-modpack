@@ -46,6 +46,11 @@ CMCG.key_of = key_of
 CMCG.dead = CMCG.dead or {}
 -- Workspaces the Gui still owns.
 CMCG.live_workspaces = CMCG.live_workspaces or {}
+-- What each object is: "panel" for containers, otherwise the creator name. Only
+-- panels may be asked for their children.
+CMCG.kind = CMCG.kind or {}
+-- Where each object came from, so a broken node names its creation site.
+CMCG.origin = CMCG.origin or {}
 
 local function patch(mt, name, wrapper)
 	if not mt then
@@ -118,12 +123,17 @@ end
 
 -- Tree dump ----------------------------------------------------------------
 
--- Walks what Lua can see of a panel, the same vector the engine walks. Anything
--- that throws is a broken node and gets named.
-local function dump(obj, depth, out, prefix)
+-- Walks what Lua can see of a panel, the same vector the engine walks.
+--
+-- children() may only be called on an object that really is a panel. Every Gui
+-- object shares one metatable, so children() on a Bitmap or a Text reaches the
+-- same native accessor and reads +0x110/+0x118 on bytes that are not a vector,
+-- which faults exactly like the bug being hunted. The kind registry below is
+-- filled at creation time, and only objects recorded as panels are recursed into.
+local function dump(obj, depth, prefix)
 	depth = depth or 0
 
-	if depth > 6 then
+	if depth > 8 then
 		return
 	end
 
@@ -132,11 +142,19 @@ local function dump(obj, depth, out, prefix)
 	end)
 
 	if not ok_children or type(children) ~= "table" then
+		CMCG:write("%s<<< children() FAILED on %s", prefix, key_of(obj))
+
 		return
 	end
 
 	for i, child in ipairs(children) do
+		-- Written before the child is touched, so if reading it faults the log
+		-- already names the parent and the index.
+		CMCG:write("%s[%d] probing under parent %s", prefix, i, key_of(obj))
+
 		local k = key_of(child)
+		local kind = CMCG.kind[k]
+
 		local ok_name, name = pcall(function()
 			return child:name()
 		end)
@@ -148,49 +166,60 @@ local function dump(obj, depth, out, prefix)
 			local _ = child:parent()
 		end)
 
-		out[#out + 1] = string.format(
-			"%s[%d] %s name=%s vis=%s%s%s",
+		CMCG:write(
+			"%s[%d] %s kind=%s name=%s vis=%s%s%s%s",
 			prefix,
 			i,
 			k,
+			tostring(kind or "UNKNOWN"),
 			ok_name and tostring(name) or "?",
 			ok_vis and tostring(vis) or "?",
 			ok_alive and "" or " <<< UNREADABLE",
-			CMCG.dead[k] and " <<< ALREADY DESTROYED" or ""
+			CMCG.dead[k] and " <<< ALREADY DESTROYED" or "",
+			kind == nil and " <<< NOT CREATED THROUGH LUA" or ""
 		)
 
-		dump(child, depth + 1, out, prefix .. "  ")
+		if kind == nil or CMCG.dead[k] then
+			CMCG:write("%s     origin: %s", prefix, tostring(CMCG.origin[k] or "unknown"))
+		end
+
+		if kind == "panel" then
+			dump(child, depth + 1, prefix .. "  ")
+		end
 	end
 end
 
 -- Dumps every workspace this mod knows about, root panel first. Called every
--- frame for the first seconds of a level, so the tail of the log is the state
--- of the tree on the frame that faulted.
+-- frame for the first frames of a level, so the tail of the log is the state of
+-- the tree on the frame that faulted. Every line is flushed as it is produced.
 function CMCG:dump_tree(tag)
-	local out = {}
 	local count = 0
 
-	for k, ws in pairs(self.live_workspaces) do
+	for _ in pairs(self.live_workspaces) do
 		count = count + 1
+	end
 
+	self:write("tree %s: %d workspace(s)", tostring(tag), count)
+
+	for k, ws in pairs(self.live_workspaces) do
 		local ok_panel, panel = pcall(function()
 			return ws:panel()
 		end)
 
 		if not ok_panel or not panel then
-			out[#out + 1] = string.format("ws %s <<< ROOT PANEL UNREADABLE", k)
+			self:write("ws %s <<< ROOT PANEL UNREADABLE | origin: %s", k, tostring(self.origin[k] or "unknown"))
 		else
-			out[#out + 1] = string.format("ws %s root=%s", k, key_of(panel))
+			local root = key_of(panel)
 
-			dump(panel, 0, out, "    ")
+			self.kind[root] = "panel"
+
+			self:write("ws %s root=%s", k, root)
+
+			dump(panel, 0, "    ")
 		end
 	end
 
-	self:write("tree %s: %d workspace(s)", tostring(tag), count)
-
-	for _, line in ipairs(out) do
-		self:write("  %s", line)
-	end
+	self:write("tree %s done", tostring(tag))
 end
 
 -- Wiring -------------------------------------------------------------------
@@ -226,6 +255,8 @@ function CMCG:wire_gui()
 
 				CMCG.live_workspaces[k] = ws
 				CMCG.dead[k] = nil
+				CMCG.kind[k] = "workspace"
+				CMCG.origin[k] = name .. " | " .. CMCG:stack(4)
 
 				CMCG:write("gui + %s -> ws %s | %s", name, k, CMCG:stack(3))
 
@@ -263,16 +294,29 @@ function CMCG:wire_gui()
 		wired[#wired + 1] = "destroy_workspace"
 	end
 
-	-- Panel: everything that adds or drops a node. The additions are logged
-	-- only at debug volume; the removals are what matter.
+	-- Panel: everything that adds or drops a node. Creation is not logged line by
+	-- line -- there are thousands -- but every object is recorded with its kind
+	-- and its creation site, which is what names a broken node later. Only the
+	-- objects recorded as "panel" may be asked for their children.
 	if mts.panel then
+		-- Only panel() is known to produce something with a children vector.
+		-- gui(), video() and the rest are treated as leaves: guessing wrong here
+		-- means faulting on children() the way the last run did.
+		local container = {
+			panel = true
+		}
+
 		for _, name in ipairs({"panel", "rect", "bitmap", "text", "gui", "video", "polyline"}) do
 			if patch(mts.panel, name, function(original)
 				return function(panel, ...)
 					local child = original(panel, ...)
 
 					if child ~= nil then
-						CMCG.dead[key_of(child)] = nil
+						local k = key_of(child)
+
+						CMCG.dead[k] = nil
+						CMCG.kind[k] = container[name] and "panel" or name
+						CMCG.origin[k] = string.format("%s on %s | %s", name, key_of(panel), CMCG:stack(4))
 					end
 
 					return child
