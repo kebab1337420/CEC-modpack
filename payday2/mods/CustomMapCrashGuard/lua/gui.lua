@@ -228,7 +228,13 @@ function CMCG:dump_tree(tag)
 		count = count + 1
 	end
 
-	self:write("tree %s: %d workspace(s)", tostring(tag), count)
+	self:write(
+		"tree %s: %d workspace(s), object workspaces ok=%d refused=%d",
+		tostring(tag),
+		count,
+		self.object_ws_ok or 0,
+		self.object_ws_refused or 0
+	)
 	self:open_batch()
 
 	local quarantine = {}
@@ -336,6 +342,54 @@ function CMCG:wire_gui()
 		end) then
 			wired[#wired + 1] = name
 		end
+	end
+
+	-- create_object_workspace links the workspace to an object of a unit, and the
+	-- engine derefs that link every frame it walks the workspace. Every gui prop
+	-- passes unit:get_object(Idstring(self._gui_object)), which returns nil when the
+	-- unit's model has no object under that name -- and nothing in Lua fails when it
+	-- does: the workspace is created, the panel and the .gui file load, the text is
+	-- set, init returns. The null link only bites on the first frame the engine
+	-- walks the workspace list, as an access violation with no Lua stack. Custom and
+	-- dev maps hit this whenever a placed unit lost the gui object its saved data
+	-- still names.
+	--
+	-- Refused here. A hidden screen workspace is handed back instead of nil, so the
+	-- caller's ws:panel() and everything built on it keeps working and the prop is
+	-- simply invisible.
+	CMCG.object_ws_ok = CMCG.object_ws_ok or 0
+	CMCG.object_ws_refused = CMCG.object_ws_refused or 0
+
+	if patch(mts.gui, "create_object_workspace", function(original)
+		return function(gui, w, h, object, offset, ...)
+			local ok, usable = pcall(function()
+				return object ~= nil and alive(object)
+			end)
+
+			if not ok or not usable then
+				CMCG.object_ws_refused = CMCG.object_ws_refused + 1
+
+				CMCG:write(
+					"gui !! create_object_workspace on a dead object (%s) -- REFUSED, prop goes invisible | %s",
+					tostring(object),
+					CMCG:stack(3)
+				)
+
+				local ws = gui:create_scaled_screen_workspace(10, 10, 10, 10, 10)
+
+				pcall(function()
+					ws:hide()
+				end)
+
+				return ws
+			end
+
+			CMCG.object_ws_ok = CMCG.object_ws_ok + 1
+
+			return original(gui, w, h, object, offset, ...)
+		end
+	end) then
+		wired[#wired + 1] = "create_object_workspace:dead-object-guard"
 	end
 
 	if patch(mts.gui, "destroy_workspace", function(original)

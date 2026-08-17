@@ -15,7 +15,7 @@ end
 local CMCG = {}
 _G.CustomMapCrashGuard = CMCG
 
-CMCG.VERSION = "2.2"
+CMCG.VERSION = "2.3"
 
 -- Guards that actually change behaviour. Trace-only by default except for the
 -- ones that cannot make anything worse.

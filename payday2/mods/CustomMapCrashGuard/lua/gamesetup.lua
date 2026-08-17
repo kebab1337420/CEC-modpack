@@ -26,6 +26,10 @@ local function wire_late_traces()
 	if not CMCG.gui_wired then
 		pcall(dofile, mod_path .. "lua/gui.lua")
 	end
+
+	if not CMCG.props_wired then
+		pcall(dofile, mod_path .. "lua/guiprops.lua")
+	end
 end
 
 wire_late_traces()
