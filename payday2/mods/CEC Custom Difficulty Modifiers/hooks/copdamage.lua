@@ -23,3 +23,19 @@ if rawget(CopDamage, "init") then
 		CECDifficulty:ScaleEnemy(self, tweak_table)
 	end)
 end
+
+if rawget(CopDamage, "_clbk_tweak_data_changed") then
+	Hooks:PostHook(CopDamage, "_clbk_tweak_data_changed", "CECDifficulty_TweakChanged", function(self)
+		if not Network:is_server() then
+			return
+		end
+
+		local tweak_table = nil
+
+		pcall(function()
+			tweak_table = self._unit:base()._tweak_table
+		end)
+
+		CECDifficulty:RescaleEnemy(self, tweak_table)
+	end)
+end

@@ -1,6 +1,6 @@
 {
 	"name" : "CEC Detection Risk Live",
-	"description" : "Affiche en clair la jauge de detection : pourcentage exact de remplissage, nombre de gardes qui te fixent en meme temps, et couleur qui passe au rouge avant que le compteur ne soit plein.",
+	"description" : "Affiche en clair la jauge de detection : pourcentage exact de remplissage, nombre de gardes qui te fixent en meme temps (uniquement quand tu heberges la partie, le jeu ne synchronise pas ce detail aux clients), et couleur qui passe au rouge avant que le compteur ne soit plein.",
 	"author" : "Alaric",
 	"version" : "1.0",
 	"blt_version" : 2.0,

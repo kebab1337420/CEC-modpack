@@ -127,6 +127,8 @@ end
 
 -- Applied to a freshly initialised CopDamage. The granularity value is derived
 -- from the initial health, so it has to be recomputed rather than left behind.
+-- The result is remembered so a later tweak data change can be told apart from
+-- our own value still sitting there.
 function CECDifficulty:ScaleEnemy(damage_ext, tweak_table)
 	local mul = self:HealthMultiplier(tweak_table)
 
@@ -141,5 +143,44 @@ function CECDifficulty:ScaleEnemy(damage_ext, tweak_table)
 		if damage_ext._HEALTH_GRANULARITY then
 			damage_ext._HEALTH_INIT_PRECENT = damage_ext._HEALTH_INIT / damage_ext._HEALTH_GRANULARITY
 		end
+
+		damage_ext._cec_health_init = damage_ext._HEALTH_INIT
+	end)
+end
+
+-- A unit whose character tweak changes mid heist - a cop promoted to a Captain
+-- escort, anything with modify_health_on_tweak_change - gets its health read
+-- back from the tweak data, which throws the multiplier away. Re-applying it
+-- here keeps those units in line with the rest, and the remembered value stops
+-- an untouched unit from being scaled a second time.
+function CECDifficulty:RescaleEnemy(damage_ext, tweak_table)
+	local mul = self:HealthMultiplier(tweak_table)
+
+	if mul == 1 then
+		return
+	end
+
+	pcall(function()
+		if damage_ext._cec_health_init == damage_ext._HEALTH_INIT then
+			return
+		end
+
+		local init = damage_ext._HEALTH_INIT
+
+		if type(init) ~= "number" or init <= 0 then
+			return
+		end
+
+		-- Keep whatever share of its health the unit had left.
+		local ratio = math.clamp((damage_ext._health or init) / init, 0, 1)
+
+		damage_ext._HEALTH_INIT = init * mul
+		damage_ext._health = damage_ext._HEALTH_INIT * ratio
+
+		if damage_ext._HEALTH_GRANULARITY then
+			damage_ext._HEALTH_INIT_PRECENT = damage_ext._HEALTH_INIT / damage_ext._HEALTH_GRANULARITY
+		end
+
+		damage_ext._cec_health_init = damage_ext._HEALTH_INIT
 	end)
 end
