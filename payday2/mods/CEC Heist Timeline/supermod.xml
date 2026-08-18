@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<mod name="CEC Heist Timeline">
-	<hooks>
-		<post hook_id="lib/managers/group_ai_states/groupaistatebase" script_path="hooks/groupai.lua"/>
-		<post hook_id="lib/managers/lootmanager" script_path="hooks/loot.lua"/>
-		<post hook_id="lib/units/beings/player/playerdamage" script_path="hooks/damage.lua"/>
-		<post hook_id="lib/managers/hudmanagerpd2" script_path="hooks/hud.lua"/>
-	</hooks>
-</mod>

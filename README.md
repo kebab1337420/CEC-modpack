@@ -15,3 +15,12 @@ install.bat
 Mettez les logs 📠 qui sont dans les fichier PAYDAY 2\mods\logs et donnez aussi les crash report :pray:.
 
 si vous avez des idées 💡 , mettez dans "issues" ou envoyez un DM 💌.
+
+## Licence
+
+Le code ecrit pour ce modpack (les mods `CEC *`, `install.bat`, les scripts de
+`tools/`) est sous licence MIT, voir `LICENSE`.
+
+Les mods tiers redistribues ici (BeardLib, HopLib, BigLobby3, etc.) restent sous
+la licence de leurs auteurs respectifs : voir le fichier `LICENSE` present dans
+le dossier de chaque mod.
